@@ -1,654 +1,1229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DHAKIR AI - Advanced AI Assistant</title>
-    <!-- Tailwind CSS from CDN -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Numbers Quiz / ഭിന്നസംഖ്യാ ക്വിസ്</title>
+    <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React and ReactDOM from CDN -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel Standalone for JSX/TSX transpilation in the browser -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Markdown parser for rendering AI responses -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        /* Custom Tailwind Configuration */
+        /* Custom styles for the Inter font and general layout */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px; /* Add some padding for smaller screens */
+            box-sizing: border-box;
         }
-        /* Advanced Animations */
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        #quiz-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between sections */
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        .question-text {
+            font-size: 1.5rem; /* Larger font for questions */
+            font-weight: bold;
+            color: #374151; /* Darker text for readability */
+            margin-bottom: 1rem;
         }
-        @keyframes pulse-rainbow {
-            0%, 100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.5); }
-            25% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); }
-            75% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.5); }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db; /* Light gray border */
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
         }
-        @keyframes slide-in-left {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .option-label:hover {
+            background-color: #eff6ff; /* Light blue on hover */
+            border-color: #93c5fd; /* Blue border on hover */
         }
-        @keyframes slide-in-right {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .option-label input[type="radio"] {
+            margin-right: 0.75rem;
+            accent-color: #3b82f6; /* Blue radio button */
         }
-        @keyframes bounce-in {
-            0% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 1; transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
+        .feedback-message {
+            font-weight: bold;
+            text-align: center;
+            padding-top: 1rem;
         }
-        @keyframes typing-dots {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-10px); opacity: 1; }
+        .correct {
+            color: #10b981; /* Green for correct */
         }
-        @keyframes shimmer-rainbow {
-            0% { background-position: -200px 0; }
-            100% { background-position: calc(200px + 100%) 0; }
+        .incorrect {
+            color: #ef4444; /* Red for incorrect */
         }
-        /* Custom Classes */
-        .animate-gradient {
-            background-size: 400% 400%;
-            animation: gradient-shift 8s ease infinite;
+        .score-display {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4b5563;
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* Space between buttons */
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
         }
-        .animate-pulse-rainbow {
-            animation: pulse-rainbow 3s ease-in-out infinite;
-        }
-        .animate-slide-in-left {
-            animation: slide-in-left 0.6s ease-out forwards;
-        }
-        .animate-slide-in-right {
-            animation: slide-in-right 0.6s ease-out forwards;
-        }
-        .animate-bounce-in {
-            animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-        .animate-typing-dots {
-            animation: typing-dots 1.4s infinite;
-        }
-        .animate-shimmer-rainbow {
-            background: linear-gradient(90deg, 
-                #ec4899 0%, #3b82f6 25%, #10b981 50%, #f59e0b 75%, #ec4899 100%);
-            background-size: 200px 100%;
-            animation: shimmer-rainbow 2s infinite;
-        }
-        /* Gradient Backgrounds */
-        .bg-gradient-cosmic {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .bg-gradient-sunset {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-        }
-        .bg-gradient-ocean {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .bg-gradient-forest {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        .bg-gradient-fire {
-            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
-        }
-        /* Glass Morphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .glass-dark {
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-        ::-webkit-scrollbar-track {
-            background: linear-gradient(180deg, #1f2937, #374151);
-            border-radius: 6px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #ec4899, #3b82f6);
-            border-radius: 6px;
-            border: 2px solid #1f2937;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #be185d, #1d4ed8);
-        }
-        /* Responsive Typography */
-        @media (max-width: 640px) {
-            .text-responsive-xl { font-size: 1.5rem; }
-            .text-responsive-lg { font-size: 1.25rem; }
-            .text-responsive-base { font-size: 1rem; }
-            .text-responsive-sm { font-size: 0.875rem; }
-        }
-        @media (min-width: 641px) {
-            .text-responsive-xl { font-size: 2rem; }
-            .text-responsive-lg { font-size: 1.5rem; }
-            .text-responsive-base { font-size: 1.125rem; }
-            .text-responsive-sm { font-size: 1rem; }
-        }
-        /* Prose Styling */
-        .prose-colorful h1, .prose-colorful h2, .prose-colorful h3 {
-            background: linear-gradient(135deg, #ec4899, #3b82f6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .prose-colorful code {
-            background: linear-gradient(135deg, #ec4899, #3b82f6);
+        .quiz-button {
+            background-color: #3b82f6; /* Blue background */
             color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            border: none; /* Remove default button border */
+        }
+        .quiz-button:hover {
+            background-color: #2563eb; /* Darker blue on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .quiz-button:disabled {
+            background-color: #9ca3af; /* Gray when disabled */
+            cursor: not-allowed;
+            transform: none;
+        }
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .lang-button {
+            background-color: #60a5fa;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 0.5rem;
             font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
         }
-        .prose-colorful pre {
-            background: linear-gradient(135deg, #1f2937, #374151);
-            border: 1px solid rgba(236, 72, 153, 0.3);
-            border-radius: 0.75rem;
+        .lang-button.active {
+            background-color: #3b82f6;
         }
-        /* Mobile Optimizations */
-        @media (max-width: 768px) {
-            .mobile-padding { padding: 1rem; }
-            .mobile-text { font-size: 0.875rem; }
-            .mobile-button { padding: 0.5rem 1rem; }
+        .lang-button:hover:not(.active) {
+            background-color: #3b82f6;
+        }
+        .results-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .result-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+        .result-question {
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .result-your-answer, .result-correct-answer {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+        .result-your-answer.wrong {
+            color: #ef4444; /* Red for incorrect user answer */
+        }
+        .result-correct-answer.right {
+            color: #10b981; /* Green for correct answer */
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white antialiased min-h-screen">
-    <div id="root"></div>
-    
-    <script type="text/babel" data-type="module">
-        // Import from esm.sh CDN which bundles NPM packages for browser use
-        import { GoogleGenAI } from 'https://esm.sh/@google/genai';
+<body>
+    <div id="quiz-container" class="flex flex-col gap-6">
+        <h1 id="quiz-title" class="text-3xl font-extrabold text-center text-gray-800 mb-4">
+            Rational Numbers Quiz / ഭിന്നസംഖ്യാ ക്വിസ്
+        </h1>
 
-        // --- CONSTANTS & CONFIGURATION ---
-        
-        // IMPORTANT: In a real-world application, this key should be managed on a secure backend server
-        // to avoid exposing it publicly. For this demo, it's set directly.
-        const API_KEY = "AIzaSyCuP97gUBnrnCq1IJFcWRCQDJhldF6jlsY";
+        <!-- Language Switch Buttons -->
+        <div class="language-buttons">
+            <button id="lang-en" class="lang-button active">English</button>
+            <button id="lang-ml" class="lang-button">മലയാളം</button>
+        </div>
 
-        // --- HELPER FUNCTIONS ---
+        <!-- Question Display Area -->
+        <div id="question-area" class="bg-blue-50 p-6 rounded-lg">
+            <p id="question-display" class="question-text"></p>
+        </div>
 
-        const renderMarkdown = (text) => {
-            // Configure marked to add line breaks and highlight code
-            marked.setOptions({
-                breaks: true,
-                gfm: true,
-                highlight: function(code, lang) {
-                    return code; // Simple highlighting, could be enhanced with Prism.js
-                }
+        <!-- Options Container -->
+        <div id="options-container" class="flex flex-col gap-3">
+            <!-- Options will be dynamically loaded here -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button id="submit-answer" class="quiz-button"></button>
+            <button id="next-question" class="quiz-button" style="display: none;"></button>
+            <button id="restart-quiz" class="quiz-button" style="display: none;"></button>
+        </div>
+
+        <!-- Feedback and Score Display -->
+        <div id="feedback-area" class="text-center">
+            <p id="feedback-display" class="feedback-message"></p>
+            <p id="score-display" class="score-display mt-2" style="display: none;"></p>
+        </div>
+
+        <!-- Results Section (hidden until quiz completion) -->
+        <div id="results-section" class="results-section" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center" id="results-title"></h2>
+            <div id="all-answers-display">
+                <!-- All questions and answers will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data: array of objects, each containing questions and options in both languages.
+        const quizQuestions = [
+            // Questions based on 1.2.1 Closure
+            {
+                question_en: "Are whole numbers closed under addition? For example, $0+5=5$.",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0+5=5$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is $5-7=-2$ an example showing whole numbers are NOT closed under subtraction?",
+                options_en: ["Yes", "No"],
+                question_ml: "$5-7=-2$ എന്നത് അഖണ്ഡസംഖ്യകൾ വ്യവകലനത്തിന് കീഴിൽ സംവൃതമല്ലെന്ന് കാണിക്കുന്ന ഉദാഹരണമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are whole numbers closed under multiplication? For example, $0 \times 3 = 0$.",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0 \times 3 = 0$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is $5 \div 8 = 5/8$ an example showing whole numbers are NOT closed under division?",
+                options_en: ["Yes", "No"],
+                question_ml: "$5 \div 8 = 5/8$ എന്നത് അഖണ്ഡസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമല്ലെന്ന് കാണിക്കുന്ന ഉദാഹരണമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are integers closed under addition? For example, $-6+5=-1$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $-6+5=-1$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are integers closed under subtraction? For example, $7-5=2$ and $-6-8=-14$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $7-5=2$ കൂടാതെ $-6-8=-14$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are integers closed under multiplication? For example, $5 \times 8 = 40$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \times 8 = 40$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are integers closed under division? For example, $5 \div 8 = 5/8$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \div 8 = 5/8$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "A rational number can be written in the form $p/q$, where $p$ and $q$ are integers and $q$ is not zero. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയെ $p/q$ രൂപത്തിൽ എഴുതാം, ഇവിടെ $p$ ഉം $q$ ഉം പൂർണ്ണസംഖ്യകളും $q$ പൂജ്യമല്ലാത്ത സംഖ്യയുമാണ്. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+            {
+                question_en: "Is the sum of two rational numbers always a rational number? For example, $3/8 + (-5)/7 = -19/56$.",
+                options_en: ["Yes", "No"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ തുക എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $3/8 + (-5)/7 = -19/56$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is the difference of two rational numbers always a rational number? For example, $-5/7 - 2/3 = -29/21$.",
+                options_en: ["Yes", "No"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ വ്യത്യാസം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $-5/7 - 2/3 = -29/21$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is the product of two rational numbers always a rational number? For example, $-2/3 \times 4/5 = -8/15$.",
+                options_en: ["Yes", "No"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ ഗുണനഫലം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $-2/3 \times 4/5 = -8/15$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Are rational numbers closed under division by zero?",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകൾ പൂജ്യം കൊണ്ടുള്ള ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "If we exclude zero, is the collection of all other rational numbers closed under division?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂജ്യം ഒഴിവാക്കിയാൽ, മറ്റ് എല്ലാ ഭിന്നസംഖ്യകളുടെയും ശേഖരം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The property that a set is closed under an operation means that performing the operation on any two elements of the set always results in an element within the same set. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "ഒരു ഗണം ഒരു ക്രിയയ്ക്ക് കീഴിൽ സംവൃതമാണ് എന്നതിനർത്ഥം, ഗണത്തിലെ ഏതെങ്കിലും രണ്ട് അംഗങ്ങളിൽ ആ ക്രിയ ചെയ്യുമ്പോൾ എല്ലായ്പ്പോഴും അതേ ഗണത്തിനുള്ളിൽ ഒരു അംഗം ലഭിക്കുന്നു എന്നാണ്. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+
+            // Questions based on 1.2.2 Commutativity
+            {
+                question_en: "Is addition commutative for whole numbers? For example, $0+7=7+0$.",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ സങ്കലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $0+7=7+0$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction commutative for whole numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication commutative for whole numbers? For example, $0 \times 3 = 0$.",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0 \times 3 = 0$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division commutative for whole numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is addition commutative for integers? For example, $-6+5=-1$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $-6+5=-1$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction commutative for integers? For example, $5-(-3)$ is not equal to $-3-5$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $5-(-3)$ എന്നത് $-3-5$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication commutative for integers? For example, $5 \times 8 = 40$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \times 8 = 40$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division commutative for integers? For example, $5 \div 8 = 5/8$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \div 8 = 5/8$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is addition commutative for rational numbers? For example, $-2/3 + 5/7 = 5/7 + (-2/3)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ സങ്കലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-2/3 + 5/7 = 5/7 + (-2/3)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction commutative for rational numbers? For example, $2/3 - 5/4$ is not equal to $5/4 - 2/3$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $2/3 - 5/4$ എന്നത് $5/4 - 2/3$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication commutative for rational numbers? For example, $-7/3 \times 6/5 = 6/5 \times (-7/3)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-7/3 \times 6/5 = 6/5 \times (-7/3)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division commutative for rational numbers? For example, $-5/4 \div 3/7$ is not equal to $3/7 \div (-5/4)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-5/4 \div 3/7$ എന്നത് $3/7 \div (-5/4)$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The Commutative property means that changing the order of numbers in an operation does not change the result. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "ക്രമവിനിമയ നിയമം എന്നാൽ ഒരു ക്രിയയിൽ സംഖ്യകളുടെ ക്രമം മാറ്റുന്നത് ഫലത്തെ മാറ്റുന്നില്ല എന്നാണ്. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+
+            // Questions based on 1.2.3 Associativity
+            {
+                question_en: "Is addition associative for whole numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction associative for whole numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication associative for whole numbers? For example, $7 \times (2 \times 5) = (7 \times 2) \times 5$.",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $7 \times (2 \times 5) = (7 \times 2) \times 5$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division associative for whole numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is addition associative for integers? For example, $(-2) + [3 + (-4)] = [(-2) + 3] + (-4)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $(-2) + [3 + (-4)] = [(-2) + 3] + (-4)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction associative for integers? For example, $5-(7-3)$ is not equal to $(5-7)-3$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $5-(7-3)$ എന്നത് $(5-7)-3$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication associative for integers? For example, $5 \times [(-7) \times (-8)] = [5 \times (-7)] \times (-8)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $5 \times [(-7) \times (-8)] = [5 \times (-7)] \times (-8)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division associative for integers? For example, $[(-10) \div 2] \div (-5)$ is not equal to $(-10) \div [2 \div (-5)]$.",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $[(-10) \div 2] \div (-5)$ എന്നത് $(-10) \div [2 \div (-5)]$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is addition associative for rational numbers? For example, $-2/3 + [3/5 + (-5/6)] = [-2/3 + 3/5] + (-5/6)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $-2/3 + [3/5 + (-5/6)] = [-2/3 + 3/5] + (-5/6)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is subtraction associative for rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is multiplication associative for rational numbers? For example, $-7/3 \times (5/4 \times 2/9) = (-7/3 \times 5/4) \times 2/9$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $-7/3 \times (5/4 \times 2/9) = (-7/3 \times 5/4) \times 2/9$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division associative for rational numbers? For example, $1/2 \div [-1/3 \div 2/5]$ is not equal to $[1/2 \div (-1/3)] \div 2/5$.",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $1/2 \div [-1/3 \div 2/5]$ എന്നത് $[1/2 \div (-1/3)] \div 2/5$ ന് തുല്യമല്ല.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The Associative property means that changing the grouping of numbers in an operation does not change the result. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "സഹചാരി നിയമം എന്നാൽ ഒരു ക്രിയയിൽ സംഖ്യകളെ ഗ്രൂപ്പുചെയ്യുന്നത് ഫലത്തെ മാറ്റുന്നില്ല എന്നാണ്. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+
+            // Questions based on 1.2.4 The role of zero (0)
+            {
+                question_en: "What is the result when you add 0 to any whole number? For example, $2+0=2$.",
+                options_en: ["The number becomes 0", "The number stays the same", "The number becomes negative", "The number doubles"],
+                question_ml: "ഏതെങ്കിലും ഒരു അഖണ്ഡസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $2+0=2$.",
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യ നെഗറ്റീവ് ആകുന്നു", "സംഖ്യ ഇരട്ടിക്കുന്നു"],
+                answer: 1
+            },
+            {
+                question_en: "What is the result when you add 0 to any integer? For example, $-5+0=-5$.",
+                options_en: ["The number becomes 0", "The number stays the same", "The number becomes positive", "The number halves"],
+                question_ml: "ഏതെങ്കിലും ഒരു പൂർണ്ണസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $-5+0=-5$.",
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യ പോസിറ്റീവ് ആകുന്നു", "സംഖ്യ പകുതിയാകുന്നു"],
+                answer: 1
+            },
+            {
+                question_en: "What is the result when you add 0 to any rational number? For example, $-2/7 + 0 = -2/7$.",
+                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number becomes an integer"],
+                question_ml: "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $-2/7 + 0 = -2/7$.",
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഒരു പൂർണ്ണസംഖ്യ ആകുന്നു"],
+                answer: 1
+            },
+            {
+                question_en: "Zero is called the ______ identity for the addition of rational numbers.",
+                options_en: ["Multiplicative", "Additive", "Subtractive", "Divisive"],
+                question_ml: "പൂജ്യത്തെ ഭിന്നസംഖ്യകളുടെ സങ്കലനത്തിന്റെ ______ തന്മകം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["ഗുണന", "സങ്കലന", "വ്യവകലന", "ഹരണ"],
+                answer: 1
+            },
+            {
+                question_en: "Is zero the additive identity for integers and whole numbers as well?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂജ്യം പൂർണ്ണസംഖ്യകളുടെയും അഖണ്ഡസംഖ്യകളുടെയും സങ്കലന തന്മകം കൂടിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+
+            // Questions based on 1.2.5 The role of 1
+            {
+                question_en: "What happens when you multiply any whole number by 1? For example, $5 \times 1 = 5$.",
+                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number doubles"],
+                question_ml: "ഏതെങ്കിലും ഒരു അഖണ്ഡസംഖ്യയെ 1 കൊണ്ട് ഗുണിക്കുമ്പോൾ എന്ത് സംഭവിക്കുന്നു? ഉദാഹരണത്തിന്, $5 \times 1 = 5$.",
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഇരട്ടിക്കുന്നു"],
+                answer: 1
+            },
+            {
+                question_en: "What happens when you multiply any rational number by 1? For example, $-2/7 \times 1 = -2/7$.",
+                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number becomes an integer"],
+                question_ml: "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യയെ 1 കൊണ്ട് ഗുണിക്കുമ്പോൾ എന്ത് സംഭവിക്കുന്നു? ഉദാഹരണത്തിന്, $-2/7 \times 1 = -2/7$.",
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഒരു പൂർണ്ണസംഖ്യ ആകുന്നു"],
+                answer: 1
+            },
+            {
+                question_en: "The number 1 is called the ______ identity for rational numbers.",
+                options_en: ["Additive", "Multiplicative", "Subtractive", "Divisive"],
+                question_ml: "1 എന്ന സംഖ്യയെ ഭിന്നസംഖ്യകളുടെ ______ തന്മകം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["സങ്കലന", "ഗുണന", "വ്യവകലന", "ഹരണ"],
+                answer: 1
+            },
+            {
+                question_en: "Is 1 the multiplicative identity for integers and whole numbers as well?",
+                options_en: ["Yes", "No"],
+                question_ml: "1 പൂർണ്ണസംഖ്യകളുടെയും അഖണ്ഡസംഖ്യകളുടെയും ഗുണന തന്മകം കൂടിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "If $a \times 1 = a$ for any rational number $a$, this is the property of the ______ identity.",
+                options_en: ["Additive", "Multiplicative", "Zero", "Inverse"],
+                question_ml: "ഏതൊരു ഭിന്നസംഖ്യ $a$ യ്ക്കും $a \times 1 = a$ ആണെങ്കിൽ, ഇത് ______ തന്മകത്തിന്റെ ഗുണമാണ്.",
+                options_ml: ["സങ്കലന", "ഗുണന", "പൂജ്യം", "വിപരീത"],
+                answer: 1
+            },
+
+            // Questions based on 1.2.6 Distributivity
+            {
+                question_en: "The property $a \times (b + c) = (a \times b) + (a \times c)$ is called Distributivity of multiplication over addition. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്ന ഗുണത്തെ സങ്കലനത്തിന്മേലുള്ള ഗുണനത്തിന്റെ വിഭജന നിയമം എന്ന് വിളിക്കുന്നു. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+            {
+                question_en: "Does $-3/4 \times (2/3 + (-5/6))$ equal $(-3/4 \times 2/3) + (-3/4 \times -5/6)$ by the Distributive property?",
+                options_en: ["Yes", "No"],
+                question_ml: "വിഭജന നിയമം അനുസരിച്ച് $-3/4 \times (2/3 + (-5/6))$ എന്നത് $(-3/4 \times 2/3) + (-3/4 \times -5/6)$ ന് തുല്യമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The property $a \times (b - c) = (a \times b) - (a \times c)$ is called Distributivity of multiplication over subtraction. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "$a \times (b - c) = (a \times b) - (a \times c)$ എന്ന ഗുണത്തെ വ്യവകലനത്തിന്മേലുള്ള ഗുണനത്തിന്റെ വിഭജന നിയമം എന്ന് വിളിക്കുന്നു. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+            {
+                question_en: "If you have $2/5 \times (3/7 - 1/14)$, can you write it as $(2/5 \times 3/7) - (2/5 \times 1/14)$ using distributivity?",
+                options_en: ["Yes", "No"],
+                question_ml: "$2/5 \times (3/7 - 1/14)$ എന്നതിനെ വിഭജന നിയമം ഉപയോഗിച്ച് $(2/5 \times 3/7) - (2/5 \times 1/14)$ എന്ന് എഴുതാൻ കഴിയുമോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Distributivity connects multiplication with which other operations?",
+                options_en: ["Addition only", "Subtraction only", "Both addition and subtraction", "Division only"],
+                question_ml: "വിഭജന നിയമം ഗുണനത്തെ മറ്റ് ഏത് ക്രിയകളുമായി ബന്ധിപ്പിക്കുന്നു?",
+                options_ml: ["സങ്കലനം മാത്രം", "വ്യവകലനം മാത്രം", "സങ്കലനവും വ്യവകലനവും", "ഹരണം മാത്രം"],
+                answer: 2
+            },
+
+            // Mixed Questions based on PDF content
+            {
+                question_en: "Which property is shown by: $3/7 + (-6/11) + (-8/21) + 5/22 = [3/7 + (-8/21)] + [-6/11 + 5/22]$?",
+                options_en: ["Commutativity and Associativity", "Closure and Identity", "Distributivity", "None of these"],
+                question_ml: "$3/7 + (-6/11) + (-8/21) + 5/22 = [3/7 + (-8/21)] + [-6/11 + 5/22]$ എന്നത് ഏത് ഗുണമാണ് കാണിക്കുന്നത്?",
+                options_ml: ["ക്രമവിനിമയ നിയമവും സഹചാരി നിയമവും", "സംവൃത നിയമവും തന്മക നിയമവും", "വിഭജന നിയമം", "ഇതൊന്നുമല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The product of two rational numbers is always a ______.",
+                options_en: ["Whole number", "Integer", "Rational number", "Natural number"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ ഗുണനഫലം എല്ലായ്പ്പോഴും ഒരു ______ ആണ്.",
+                options_ml: ["അഖണ്ഡസംഖ്യ", "പൂർണ്ണസംഖ്യ", "ഭിന്നസംഖ്യ", "സ്വാഭാവിക സംഖ്യ"],
+                answer: 2
+            },
+            {
+                question_en: "Between any two given rational numbers, there are ______ rational numbers.",
+                options_en: ["Only one", "A finite number of", "Countless", "No"],
+                question_ml: "ഏതെങ്കിലും രണ്ട് ഭിന്നസംഖ്യകൾക്കിടയിൽ ______ ഭിന്നസംഖ്യകളുണ്ട്.",
+                options_ml: ["ഒന്നുമാത്രം", "പരിമിതമായ എണ്ണം", "അസംഖ്യം", "ഇല്ല"],
+                answer: 2
+            },
+            {
+                question_en: "The idea of mean helps us to find rational numbers between two rational numbers. True or False?",
+                options_en: ["True", "False"],
+                question_ml: "ശരാശരി എന്ന ആശയം രണ്ട് ഭിന്നസംഖ്യകൾക്കിടയിലുള്ള ഭിന്നസംഖ്യകളെ കണ്ടെത്താൻ സഹായിക്കുന്നു. ശരിയോ തെറ്റോ?",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 0
+            },
+            {
+                question_en: "Is the division of rational numbers always closed if we exclude division by zero?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂജ്യം കൊണ്ടുള്ള ഹരണം ഒഴിവാക്കിയാൽ, ഭിന്നസംഖ്യകളുടെ ഹരണം എല്ലായ്പ്പോഴും സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "If $a \times 1 = a$, this property is related to the role of:",
+                options_en: ["Zero", "One", "Negative numbers", "Fractions"],
+                question_ml: "$a \times 1 = a$ ആണെങ്കിൽ, ഈ ഗുണം എന്തിന്റെ പങ്കുമായി ബന്ധപ്പെട്ടിരിക്കുന്നു?",
+                options_ml: ["പൂജ്യം", "ഒന്ന്", "നെഗറ്റീവ് സംഖ്യകൾ", "ഭിന്നസംഖ്യകൾ"],
+                answer: 1
+            },
+            {
+                question_en: "The sum of a rational number and its additive inverse is always:",
+                options_en: ["1", "-1", "0", "The number itself"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയുടെയും അതിന്റെ സങ്കലന വിപരീതത്തിന്റെയും തുക എല്ലായ്പ്പോഴും:",
+                options_ml: ["1", "-1", "0", "ആ സംഖ്യ തന്നെ"],
+                answer: 2
+            },
+            {
+                question_en: "What is the additive inverse of $3/4$?",
+                options_en: ["$4/3$", "$-3/4$", "$0$", "$1$"],
+                question_ml: "$3/4$ ന്റെ സങ്കലന വിപരീതം എന്താണ്?",
+                options_ml: ["$4/3$", "$-3/4$", "$0$", "$1$"],
+                answer: 1
+            },
+            {
+                question_en: "What is the multiplicative inverse of $-5/7$?",
+                options_en: ["$5/7$", "$7/5$", "$-7/5$", "$1$"],
+                question_ml: "$-5/7$ ന്റെ ഗുണന വിപരീതം എന്താണ്?",
+                options_ml: ["$5/7$", "$7/5$", "$-7/5$", "$1$"],
+                answer: 2
+            },
+            {
+                question_en: "Is $a \times (b + c) = (a \times b) + (a \times c)$ true for rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്നത് ഭിന്നസംഖ്യകൾക്ക് ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The property $a + b = b + a$ is called:",
+                options_en: ["Associativity", "Distributivity", "Commutativity", "Closure"],
+                question_ml: "$a + b = b + a$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
+                options_ml: ["സഹചാരി നിയമം", "വിഭജന നിയമം", "ക്രമവിനിമയ നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "The property $(a \times b) \times c = a \times (b \times c)$ is called:",
+                options_en: ["Commutativity", "Distributivity", "Associativity", "Closure"],
+                question_ml: "$(a \times b) \times c = a \times (b \times c)$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "വിഭജന നിയമം", "സഹചാരി നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "Is the set of natural numbers closed under subtraction?",
+                options_en: ["Yes", "No"],
+                question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is the set of natural numbers closed under division?",
+                options_en: ["Yes", "No"],
+                question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is the multiplication of natural numbers commutative?",
+                options_en: ["Yes", "No"],
+                question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗുണനം ക്രമവിനിമയമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is the addition of natural numbers associative?",
+                options_en: ["Yes", "No"],
+                question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The rational number 0 is the ______ identity for rational numbers.",
+                options_en: ["Multiplicative", "Additive", "Inverse", "Reciprocal"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ______ തന്മകമാണ് പൂജ്യം.",
+                options_ml: ["ഗുണന", "സങ്കലന", "വിപരീത", "റെസിപ്രോക്കൽ"],
+                answer: 1
+            },
+            {
+                question_en: "The rational number 1 is the ______ identity for rational numbers.",
+                options_en: ["Additive", "Multiplicative", "Inverse", "Zero"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ______ തന്മകമാണ് 1.",
+                options_ml: ["സങ്കലന", "ഗുണന", "വിപരീത", "പൂജ്യം"],
+                answer: 1
+            },
+            {
+                question_en: "Which property allows you to compute $1/3 \times (6/4 \times 3/2)$ as $(1/3 \times 6/4) \times 3/2$?",
+                options_en: ["Commutativity", "Associativity", "Distributivity", "Closure"],
+                question_ml: "$1/3 \times (6/4 \times 3/2)$ നെ $(1/3 \times 6/4) \times 3/2$ എന്ന് കണക്കാക്കാൻ ഏത് ഗുണമാണ് നിങ്ങളെ അനുവദിക്കുന്നത്?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "വിഭജന നിയമം", "സംവൃത നിയമം"],
+                answer: 1
+            },
+            {
+                question_en: "The product of two rational numbers is always a ______ number.",
+                options_en: ["Natural", "Whole", "Integer", "Rational"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ ഗുണനഫലം എല്ലായ്പ്പോഴും ഒരു ______ സംഖ്യയാണ്.",
+                options_ml: ["സ്വാഭാവിക", "അഖണ്ഡ", "പൂർണ്ണ", "ഭിന്ന"],
+                answer: 3
+            },
+            {
+                question_en: "Does $a \div (b \div c) = (a \div b) \div c$ hold true for all rational numbers (excluding division by zero)?",
+                options_en: ["Yes", "No"],
+                question_ml: "എല്ലാ ഭിന്നസംഖ്യകൾക്കും (പൂജ്യം കൊണ്ടുള്ള ഹരണം ഒഴികെ) $a \div (b \div c) = (a \div b) \div c$ ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "If $a$ is a rational number, what is $a - 0$?",
+                options_en: ["$0$", "$a$", "$-a$", "Undefined"],
+                question_ml: "$a$ ഒരു ഭിന്നസംഖ്യയാണെങ്കിൽ, $a - 0$ എന്താണ്?",
+                options_ml: ["$0$", "$a$", "$-a$", "നിർവചിക്കപ്പെട്ടിട്ടില്ല"],
+                answer: 1
+            },
+            {
+                question_en: "Is the property $a(b+c) = ab+ac$ applicable to rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "$a(b+c) = ab+ac$ എന്ന ഗുണം ഭിന്നസംഖ്യകൾക്ക് ബാധകമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The sum of $1/2$ and $1/2$ is $1$. This is an example of rational numbers being closed under:",
+                options_en: ["Subtraction", "Multiplication", "Addition", "Division"],
+                question_ml: "$1/2$ ഉം $1/2$ ഉം തമ്മിലുള്ള തുക $1$ ആണ്. ഇത് ഭിന്നസംഖ്യകൾക്ക് കീഴിൽ സംവൃതമായതിന്റെ ഉദാഹരണമാണ്:",
+                options_ml: ["വ്യവകലനം", "ഗുണനം", "സങ്കലനം", "ഹരണം"],
+                answer: 2
+            },
+            {
+                question_en: "If $a \times b = b \times a$ for rational numbers, this is the ______ property.",
+                options_en: ["Associative", "Distributive", "Commutative", "Closure"],
+                question_ml: "ഭിന്നസംഖ്യകൾക്ക് $a \times b = b \times a$ ആണെങ്കിൽ, ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "The property $a + 0 = a$ is known as the ______ identity.",
+                options_en: ["Multiplicative", "Additive", "Inverse", "Zero"],
+                question_ml: "$a + 0 = a$ എന്ന ഗുണത്തെ ______ തന്മകം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["ഗുണന", "സങ്കലന", "വിപരീത", "പൂജ്യം"],
+                answer: 1
+            },
+            {
+                question_en: "Is $(2/3 - 1/3) - 1/6 = 2/3 - (1/3 - 1/6)$ true for rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "$(2/3 - 1/3) - 1/6 = 2/3 - (1/3 - 1/6)$ എന്നത് ഭിന്നസംഖ്യകൾക്ക് ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The product of a rational number and its reciprocal is always:",
+                options_en: ["0", "1", "-1", "The number itself"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയുടെയും അതിന്റെ വിപരീതത്തിന്റെയും ഗുണനഫലം എല്ലായ്പ്പോഴും:",
+                options_ml: ["0", "1", "-1", "ആ സംഖ്യ തന്നെ"],
+                answer: 1
+            },
+            {
+                question_en: "What is the reciprocal of $1/2$?",
+                options_en: ["$-1/2$", "$2$", "$0$", "$1$"],
+                question_ml: "$1/2$ ന്റെ വിപരീതം എന്താണ്?",
+                options_ml: ["$-1/2$", "$2$", "$0$", "$1$"],
+                answer: 1
+            },
+            {
+                question_en: "Is the set of rational numbers closed under all four basic operations (addition, subtraction, multiplication, division)?",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗണം നാല് അടിസ്ഥാന ക്രിയകൾക്കും (സങ്കലനം, വ്യവകലനം, ഗുണനം, ഹരണം) കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1 // No, because of division by zero.
+            },
+            {
+                question_en: "Does the order of adding three rational numbers affect the sum? Example: $(a+b)+c$ vs $a+(b+c)$.",
+                options_en: ["Yes", "No"],
+                question_ml: "മൂന്ന് ഭിന്നസംഖ്യകൾ കൂട്ടിച്ചേർക്കുന്നതിന്റെ ക്രമം തുകയെ ബാധിക്കുമോ? ഉദാഹരണം: $(a+b)+c$ vs $a+(b+c)$.",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a \times 1 = a$ is known as the ______ identity.",
+                options_en: ["Additive", "Multiplicative", "Zero", "Inverse"],
+                question_ml: "$a \times 1 = a$ എന്ന ഗുണത്തെ ______ തന്മകം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["സങ്കലന", "ഗുണന", "പൂജ്യം", "വിപരീത"],
+                answer: 1
+            },
+            {
+                question_en: "Is $1/2 \times (1/3 - 1/4) = (1/2 \times 1/3) - (1/2 \times 1/4)$ an example of the Distributive property?",
+                options_en: ["Yes", "No"],
+                question_ml: "$1/2 \times (1/3 - 1/4) = (1/2 \times 1/3) - (1/2 \times 1/4)$ എന്നത് വിഭജന നിയമത്തിന് ഉദാഹരണമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The sum of two rational numbers is always a rational number. This is the ______ property of addition.",
+                options_en: ["Commutative", "Associative", "Closure", "Distributive"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകൾ കൂട്ടിച്ചേർക്കുമ്പോൾ ലഭിക്കുന്ന ഫലം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയാണ്. ഇത് സങ്കലനത്തിന്റെ ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "സഹചാരി", "സംവൃത", "വിഭജന"],
+                answer: 2
+            },
+            {
+                question_en: "Which number is the additive identity for rational numbers?",
+                options_en: ["1", "-1", "0", "Any rational number"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ സങ്കലന തന്മക സംഖ്യ ഏതാണ്?",
+                options_ml: ["1", "-1", "0", "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യ"],
+                answer: 2
+            },
+            {
+                question_en: "Which number is the multiplicative identity for rational numbers?",
+                options_en: ["0", "-1", "1", "Any rational number"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണന തന്മക സംഖ്യ ഏതാണ്?",
+                options_ml: ["0", "-1", "1", "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യ"],
+                answer: 2
+            },
+            {
+                question_en: "Is $a - b = b - a$ true for all rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "എല്ലാ ഭിന്നസംഖ്യകൾക്കും $a - b = b - a$ ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a \times (b + c) = (a \times b) + (a \times c)$ is an example of:",
+                options_en: ["Commutativity", "Associativity", "Distributivity", "Closure"],
+                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്നത് ഏതിന് ഉദാഹരണമാണ്?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "വിഭജന നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "The property $(a + b) + c = a + (b + c)$ is true for rational numbers. This is the ______ property of addition.",
+                options_en: ["Commutative", "Distributive", "Associative", "Closure"],
+                question_ml: "$(a + b) + c = a + (b + c)$ എന്ന ഗുണം ഭിന്നസംഖ്യകൾക്ക് ശരിയാണ്. ഇത് സങ്കലനത്തിന്റെ ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "Is the set of integers closed under division?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a \times b = b \times a$ is called the ______ property of multiplication.",
+                options_en: ["Associative", "Distributive", "Commutative", "Identity"],
+                question_ml: "$a \times b = b \times a$ എന്ന ഗുണത്തെ ഗുണനത്തിന്റെ ______ ഗുണം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "തന്മക"],
+                answer: 2
+            },
+            {
+                question_en: "What is the additive inverse of $0$?",
+                options_en: ["$1$", "$-1$", "$0$", "Undefined"],
+                question_ml: "$0$ ന്റെ സങ്കലന വിപരീതം എന്താണ്?",
+                options_ml: ["$1$", "$-1$", "$0$", "നിർവചിക്കപ്പെട്ടിട്ടില്ല"],
+                answer: 2
+            },
+            {
+                question_en: "Is multiplication distributive over subtraction for rational numbers?",
+                options_en: ["Yes", "No"],
+                question_ml: "ഭിന്നസംഖ്യകൾക്ക് വ്യവകലനത്തിന്മേലുള്ള ഗുണനം വിഭജനമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The product of a rational number and $0$ is always $0$. This is related to the role of ______.",
+                options_en: ["1", "Additive Identity", "Multiplicative Identity", "Zero"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയുടെയും $0$ ന്റെയും ഗുണനഫലം എല്ലായ്പ്പോഴും $0$ ആണ്. ഇത് ______ ന്റെ പങ്കുമായി ബന്ധപ്പെട്ടിരിക്കുന്നു.",
+                options_ml: ["1", "സങ്കലന തന്മകം", "ഗുണന തന്മകം", "പൂജ്യം"],
+                answer: 3
+            },
+            {
+                question_en: "If $a + (b + c) = (a + b) + c$ for rational numbers, this is the ______ property.",
+                options_en: ["Commutative", "Distributive", "Associative", "Closure"],
+                question_ml: "ഭിന്നസംഖ്യകൾക്ക് $a + (b + c) = (a + b) + c$ ആണെങ്കിൽ, ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "The property that allows you to change the grouping of numbers in multiplication is called:",
+                options_en: ["Commutative", "Distributive", "Associative", "Closure"],
+                question_ml: "ഗുണനത്തിൽ സംഖ്യകളുടെ ഗ്രൂപ്പിംഗ് മാറ്റാൻ സഹായിക്കുന്ന ഗുണം ഏതാണ്?",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "Is the set of whole numbers closed under subtraction?",
+                options_en: ["Yes", "No"],
+                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a \times 1 = a$ is known as the ______ identity.",
+                options_en: ["Additive", "Multiplicative", "Zero", "Inverse"],
+                question_ml: "$a \times 1 = a$ എന്ന ഗുണത്തെ ______ തന്മകം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["സങ്കലന", "ഗുണന", "പൂജ്യം", "വിപരീത"],
+                answer: 1
+            },
+            {
+                question_en: "Is the set of integers closed under subtraction?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "Is division of integers commutative?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a + b = b + a$ is called the ______ property of addition.",
+                options_en: ["Associative", "Distributive", "Commutative", "Identity"],
+                question_ml: "$a + b = b + a$ എന്ന ഗുണത്തെ സങ്കലനത്തിന്റെ ______ ഗുണം എന്ന് വിളിക്കുന്നു.",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "തന്മക"],
+                answer: 2
+            },
+            {
+                question_en: "Is the set of natural numbers closed under multiplication?",
+                options_en: ["Yes", "No"],
+                question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            },
+            {
+                question_en: "The property that states $a \times (b + c) = (a \times b) + (a \times c)$ is called:",
+                options_en: ["Commutativity", "Associativity", "Distributivity", "Closure"],
+                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "വിഭജന നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "What is the additive inverse of $5/7$?",
+                options_en: ["$7/5$", "$-5/7$", "$0$", "$1$"],
+                question_ml: "$5/7$ ന്റെ സങ്കലന വിപരീതം എന്താണ്?",
+                options_ml: ["$7/5$", "$-5/7$", "$0$", "$1$"],
+                answer: 1
+            },
+            {
+                question_en: "Is the set of integers closed under multiplication?",
+                options_en: ["Yes", "No"],
+                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല"],
+                answer: 0
+            }
+        ];
+
+        // Get DOM elements
+        const questionDisplay = document.getElementById('question-display');
+        const optionsContainer = document.getElementById('options-container');
+        const submitButton = document.getElementById('submit-answer');
+        const nextButton = document.getElementById('next-question');
+        const restartButton = document.getElementById('restart-quiz');
+        const feedbackDisplay = document.getElementById('feedback-display');
+        const scoreDisplay = document.getElementById('score-display');
+        const langEnButton = document.getElementById('lang-en');
+        const langMlButton = document.getElementById('lang-ml');
+        const resultsSection = document.getElementById('results-section');
+        const resultsTitle = document.getElementById('results-title');
+        const allAnswersDisplay = document.getElementById('all-answers-display');
+
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null; // To store the currently selected radio button
+        let currentLanguage = 'en'; // Default language is English
+        let userAnswers = []; // To store user's answer for each question
+
+        // Object for localization of static texts
+        const localization = {
+            en: {
+                quizTitle: "Rational Numbers Quiz",
+                submit: "Submit Answer",
+                next: "Next Question",
+                restart: "Restart Quiz",
+                selectAnswer: "Please select an answer!",
+                correct: "Correct!",
+                incorrect: "Incorrect. The correct answer was: ",
+                score: "Final Score: ",
+                quizCompleted: "Quiz Completed!",
+                finalScore: "You scored ",
+                outOf: " out of ",
+                resultsTitle: "Quiz Results"
+            },
+            ml: {
+                quizTitle: "ഭിന്നസംഖ്യാ ക്വിസ്",
+                submit: "ഉത്തരം സമർപ്പിക്കുക",
+                next: "അടുത്ത ചോദ്യം",
+                restart: "ക്വിസ് പുനരാരംഭിക്കുക",
+                selectAnswer: "ദയവായി ഒരു ഉത്തരം തിരഞ്ഞെടുക്കുക!",
+                correct: "ശരിയാണ്!",
+                incorrect: "തെറ്റ്. ശരിയായ ഉത്തരം: ",
+                score: "അന്തിമ സ്കോർ: ",
+                quizCompleted: "ക്വിസ് പൂർത്തിയായി!",
+                finalScore: "നിങ്ങൾക്ക് ",
+                outOf: " ൽ ",
+                resultsTitle: "ക്വിസ് ഫലങ്ങൾ"
+            }
+        };
+
+        // Function to update button texts and title based on current language
+        function updateTexts() {
+            document.getElementById('quiz-title').textContent = localization[currentLanguage].quizTitle;
+            submitButton.textContent = localization[currentLanguage].submit;
+            nextButton.textContent = localization[currentLanguage].next;
+            restartButton.textContent = localization[currentLanguage].restart;
+            resultsTitle.textContent = localization[currentLanguage].resultsTitle;
+        }
+
+        // Function to load a question
+        function loadQuestion() {
+            // Clear previous feedback and options
+            feedbackDisplay.textContent = '';
+            optionsContainer.innerHTML = '';
+            submitButton.style.display = 'block';
+            nextButton.style.display = 'none';
+            restartButton.style.display = 'none';
+            scoreDisplay.style.display = 'none'; // Hide score display during quiz
+            resultsSection.style.display = 'none'; // Hide results section
+            allAnswersDisplay.innerHTML = ''; // Clear previous answers
+            selectedOption = null; // Reset selected option
+
+            updateTexts(); // Update static texts
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                const questionData = quizQuestions[currentQuestionIndex];
+                const questionText = currentLanguage === 'en' ? questionData.question_en : questionData.question_ml;
+                const options = currentLanguage === 'en' ? questionData.options_en : questionData.options_ml;
+
+                questionDisplay.textContent = `${currentQuestionIndex + 1}. ${questionText}`;
+
+                options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option-label'; // Apply Tailwind classes for styling
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = 'quiz-option';
+                    radioInput.value = index;
+                    radioInput.id = `option-${index}`;
+                    radioInput.className = 'form-radio h-5 w-5 text-blue-600'; // Tailwind for radio button
+                    radioInput.addEventListener('change', () => {
+                        selectedOption = radioInput;
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `option-${index}`;
+                    label.textContent = option;
+                    label.className = 'ml-2 text-gray-700 text-lg'; // Tailwind for label text
+
+                    optionDiv.appendChild(radioInput);
+                    optionDiv.appendChild(label);
+                    optionsContainer.appendChild(optionDiv);
+                });
+            } else {
+                // Quiz finished
+                questionDisplay.textContent = localization[currentLanguage].quizCompleted;
+                optionsContainer.innerHTML = ''; // Clear options
+                feedbackDisplay.textContent = localization[currentLanguage].finalScore + `${score}` + localization[currentLanguage].outOf + `${quizQuestions.length}!`;
+                feedbackDisplay.className = 'feedback-message correct'; // Use correct class for final score
+                submitButton.style.display = 'none';
+                nextButton.style.display = 'none';
+                restartButton.style.display = 'block'; // Show restart button
+                scoreDisplay.style.display = 'block'; // Show final score
+                scoreDisplay.textContent = localization[currentLanguage].finalScore + `${score}` + localization[currentLanguage].outOf + `${quizQuestions.length}`;
+
+                // Display all questions and answers
+                displayAllAnswers();
+            }
+        }
+
+        // Function to check the answer
+        function checkAnswer() {
+            if (!selectedOption) {
+                feedbackDisplay.textContent = localization[currentLanguage].selectAnswer;
+                feedbackDisplay.className = 'feedback-message incorrect';
+                return;
+            }
+
+            const userAnswerIndex = parseInt(selectedOption.value);
+            const correctAnswerIndex = quizQuestions[currentQuestionIndex].answer;
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+
+            // Store user's answer
+            userAnswers[currentQuestionIndex] = {
+                question_en: currentQuestion.question_en,
+                question_ml: currentQuestion.question_ml,
+                options_en: currentQuestion.options_en,
+                options_ml: currentQuestion.options_ml,
+                correctAnswerIndex: correctAnswerIndex,
+                userAnswerIndex: userAnswerIndex
+            };
+
+            const correctOptionText = currentLanguage === 'en' ? currentQuestion.options_en[correctAnswerIndex] : currentQuestion.options_ml[correctAnswerIndex];
+
+
+            if (userAnswerIndex === correctAnswerIndex) {
+                score++;
+                feedbackDisplay.textContent = localization[currentLanguage].correct;
+                feedbackDisplay.className = 'feedback-message correct';
+            } else {
+                feedbackDisplay.textContent = localization[currentLanguage].incorrect + correctOptionText;
+                feedbackDisplay.className = 'feedback-message incorrect';
+            }
+
+            submitButton.style.display = 'none'; // Hide submit button
+            nextButton.style.display = 'block'; // Show next button
+
+            // Disable all radio buttons after submission
+            const radioButtons = optionsContainer.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.disabled = true);
+        }
+
+        // Function to go to the next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+            // Re-enable radio buttons for the new question
+            const radioButtons = optionsContainer.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.disabled = false);
+        }
+
+        // Function to restart the quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = []; // Clear stored answers
+            loadQuestion();
+        }
+
+        // Function to switch language
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            langEnButton.classList.remove('active');
+            langMlButton.classList.remove('active');
+            if (lang === 'en') {
+                langEnButton.classList.add('active');
+            } else {
+                langMlButton.classList.add('active');
+            }
+            loadQuestion(); // Reload current question in new language
+        }
+
+        // Function to display all questions and answers at the end
+        function displayAllAnswers() {
+            resultsSection.style.display = 'block'; // Show the results section
+            allAnswersDisplay.innerHTML = ''; // Clear previous content
+
+            userAnswers.forEach((item, index) => {
+                const questionText = currentLanguage === 'en' ? item.question_en : item.question_ml;
+                const options = currentLanguage === 'en' ? item.options_en : item.options_ml;
+                const userAnswerText = options[item.userAnswerIndex];
+                const correctAnswerText = options[item.correctAnswerIndex];
+
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+
+                const questionP = document.createElement('p');
+                questionP.className = 'result-question';
+                questionP.textContent = `${index + 1}. ${questionText}`;
+                resultItem.appendChild(questionP);
+
+                const yourAnswerP = document.createElement('p');
+                yourAnswerP.className = `result-your-answer ${item.userAnswerIndex === item.correctAnswerIndex ? '' : 'wrong'}`;
+                yourAnswerP.textContent = `${currentLanguage === 'en' ? 'Your Answer' : 'നിങ്ങളുടെ ഉത്തരം'}: ${userAnswerText}`;
+                resultItem.appendChild(yourAnswerP);
+
+                const correctAnswerP = document.createElement('p');
+                correctAnswerP.className = 'result-correct-answer right';
+                correctAnswerP.textContent = `${currentLanguage === 'en' ? 'Correct Answer' : 'ശരിയായ ഉത്തരം'}: ${correctAnswerText}`;
+                resultItem.appendChild(correctAnswerP);
+
+                allAnswersDisplay.appendChild(resultItem);
             });
-            return { __html: marked.parse(text) };
-        };
+        }
 
-        const detectImageRequest = (text) => {
-            const imageKeywords = [
-                'generate image', 'create image', 'make image', 'draw', 'paint', 'sketch',
-                'generate picture', 'create picture', 'make picture', 'show me', 'visualize',
-                'imagen', 'picture of', 'image of', 'photo of', 'illustration of'
-            ];
-            return imageKeywords.some(keyword => text.toLowerCase().includes(keyword));
-        };
+        // Event Listeners
+        submitButton.addEventListener('click', checkAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+        langEnButton.addEventListener('click', () => switchLanguage('en'));
+        langMlButton.addEventListener('click', () => switchLanguage('ml'));
 
-        const extractImagePrompt = (text) => {
-            // Remove common prefixes and extract the core prompt
-            const cleanText = text
-                .replace(/^(generate|create|make|draw|paint|sketch|show me|visualize)\s+(an?\s+)?(image|picture|photo|illustration)\s+(of\s+)?/i, '')
-                .replace(/^(imagen)\s*/i, '')
-                .trim();
-            return cleanText || text;
-        };
-        
-        // --- REACT COMPONENTS ---
 
-        const UserIcon = () => (
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white flex-shrink-0 shadow-2xl animate-pulse-rainbow">
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
-        );
-
-        const AiIcon = () => (
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-2xl animate-float">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                    <path d="M19 15l.94 2.06L22 18l-2.06.94L19 21l-.94-2.06L16 18l2.06-.94L19 15z"/>
-                    <path d="M5 9l.94 2.06L8 12l-2.06.94L5 15l-.94-2.06L2 12l2.06-.94L5 9z"/>
-                </svg>
-            </div>
-        );
-
-        const ImagePlaceholder = ({ isGenerating }) => (
-            <div className={`w-full h-48 md:h-64 rounded-2xl flex items-center justify-center border-2 border-dashed ${
-                isGenerating 
-                    ? 'animate-shimmer-rainbow border-transparent' 
-                    : 'border-purple-400 bg-gradient-to-br from-purple-900/30 to-pink-900/30'
-            }`}>
-                <div className="text-center">
-                    {isGenerating ? (
-                        <>
-                            <div className="relative">
-                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-transparent bg-gradient-to-r from-pink-500 to-violet-500 animate-spin mx-auto mb-4"></div>
-                                <div className="absolute inset-0 w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-white/20 mx-auto"></div>
-                            </div>
-                            <p className="text-sm md:text-base text-white font-medium animate-pulse">Creating your masterpiece...</p>
-                            <div className="flex justify-center mt-2 space-x-1">
-                                <div className="w-2 h-2 bg-pink-400 rounded-full animate-typing-dots"></div>
-                                <div className="w-2 h-2 bg-purple-400 rounded-full animate-typing-dots" style={{animationDelay: '0.2s'}}></div>
-                                <div className="w-2 h-2 bg-blue-400 rounded-full animate-typing-dots" style={{animationDelay: '0.4s'}}></div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <svg className="w-16 h-16 md:w-20 md:h-20 text-purple-300 mx-auto mb-4 animate-bounce-in" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <p className="text-sm md:text-base text-purple-200 font-medium">Your image will appear here</p>
-                        </>
-                    )}
-                </div>
-            </div>
-        );
-
-        const GeneratedImage = ({ src, alt, prompt }) => (
-            <div className="my-6 animate-bounce-in">
-                <div className="relative group">
-                    <img 
-                        src={src} 
-                        alt={alt} 
-                        className="w-full max-w-lg rounded-2xl shadow-2xl border-2 border-gradient-to-r from-pink-500 to-violet-500 transition-transform duration-300 group-hover:scale-105"
-                        onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'block';
-                        }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div className="hidden bg-gradient-to-r from-red-500/20 to-pink-500/20 glass border border-red-400/30 rounded-xl p-4 mt-4">
-                    <p className="text-red-300 text-sm font-medium">✨ Failed to load generated image</p>
-                </div>
-                <div className="mt-4 p-3 glass-dark rounded-xl">
-                    <p className="text-xs md:text-sm text-purple-200 italic">
-                        <span className="text-pink-400 font-semibold">Prompt:</span> "{prompt}"
-                    </p>
-                </div>
-            </div>
-        );
-
-        const Message = ({ message, index }) => {
-            const isUser = message.role === 'user';
-            const isEmptyAiResponse = !isUser && message.text.trim() === '';
-
-            return (
-                <div className={`flex items-start gap-3 md:gap-4 my-6 md:my-8 ${
-                    isUser ? 'animate-slide-in-right' : 'animate-slide-in-left'
-                }`}>
-                    {!isUser && <AiIcon />}
-                    <div className={`max-w-[85%] md:max-w-4xl p-4 md:p-6 rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl ${
-                        isUser 
-                            ? 'bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-br-md ml-auto glass' 
-                            : 'bg-gradient-to-br from-gray-800/80 via-gray-700/80 to-gray-600/80 rounded-bl-md glass-dark'
-                    }`}>
-                       {isEmptyAiResponse ? (
-                           <div className="flex items-center justify-center space-x-2 py-2">
-                               <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full animate-typing-dots"></div>
-                               <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-typing-dots" style={{animationDelay: '0.2s'}}></div>
-                               <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full animate-typing-dots" style={{animationDelay: '0.4s'}}></div>
-                           </div>
-                       ) : (
-                           <>
-                               <div className={`prose prose-invert prose-colorful max-w-none ${
-                                   isUser ? 'prose-p:my-2 text-white' : 'prose-p:my-2 text-gray-100'
-                               }`} dangerouslySetInnerHTML={renderMarkdown(message.text)} />
-                               {message.image && (
-                                   message.image.isGenerating ? 
-                                   <ImagePlaceholder isGenerating={true} /> :
-                                   <GeneratedImage src={message.image.url} alt={message.image.alt} prompt={message.image.prompt} />
-                               )}
-                           </>
-                       )}
-                    </div>
-                    {isUser && <UserIcon />}
-                </div>
-            );
-        };
-
-        const FeatureButton = ({ icon, label, onClick, active }) => (
-            <button
-                onClick={onClick}
-                className={`flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    active 
-                        ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg animate-pulse-rainbow' 
-                        : 'glass text-gray-200 hover:glass-dark hover:text-white hover:shadow-lg'
-                }`}
-            >
-                {icon}
-                <span className="hidden sm:inline">{label}</span>
-            </button>
-        );
-
-        const QuickPrompt = ({ text, onClick, gradient }) => (
-            <button
-                onClick={() => onClick(text)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 glass hover:glass-dark ${gradient} text-white shadow-lg hover:shadow-xl`}
-            >
-                {text}
-            </button>
-        );
-        
-        const App = () => {
-            const [messages, setMessages] = React.useState([
-                { 
-                    role: 'ai', 
-                    text: `# 🌟 Welcome to DHAKIR AI! 
-
-I'm your **advanced AI assistant** powered by cutting-edge technology and bursting with colorful personality! ✨
-
-## 🧠 **Knowledge Universe**
-- 🔬 **Science & Technology** - From quantum physics to AI breakthroughs
-- 📚 **Literature & Arts** - Creative writing, analysis, and inspiration  
-- 🧮 **Mathematics** - Complex calculations to simple explanations
-- 🌍 **History & Culture** - Explore civilizations and traditions
-- 💻 **Programming** - Code assistance across all languages
-- 🎯 **Problem Solving** - Strategic thinking and solutions
-
-## 🎨 **Image Generation Magic**
-- ✨ Create **stunning visuals** from your imagination
-- 🖼️ Generate **artwork, illustrations, and concepts**
-- 🌈 Bring your **wildest ideas to life**
-- 📸 Professional-quality **images in seconds**
-
-## 💫 **How to Interact**
-- 💬 **Ask me anything** - I love complex challenges!
-- 🎨 **For images**: Say *"generate image of..."* or *"create picture of..."*
-- 🚀 **Be creative** - I'm here to explore ideas with you!
-
-**What colorful adventure shall we embark on today?** 🌈` 
-                }
-            ]);
-            const [inputValue, setInputValue] = React.useState('');
-            const [isLoading, setIsLoading] = React.useState(false);
-            const [chat, setChat] = React.useState(null);
-            const [imageModel, setImageModel] = React.useState(null);
-            const [currentMode, setCurrentMode] = React.useState('chat'); // 'chat' or 'image'
-            const chatContainerRef = React.useRef(null);
-            
-            React.useEffect(() => {
-                try {
-                    const ai = new GoogleGenAI(API_KEY);
-                    
-                    // Initialize chat model with enhanced system instruction
-                    const chatSession = ai.getGenerativeModel({
-                        model: 'gemini-1.5-pro-latest',
-                        systemInstruction: `You are DHAKIR AI, an advanced AI assistant with a vibrant, colorful personality and extensive knowledge across all domains. You are:
-
-1. **Highly Knowledgeable**: You have deep understanding of science, technology, history, literature, arts, mathematics, philosophy, current events, and more.
-
-2. **Colorful & Engaging**: Use emojis, formatting, and enthusiastic language to make responses vibrant and engaging. Be creative with your presentation.
-
-3. **Analytical & Thoughtful**: Provide detailed, well-reasoned responses with examples and context, but make them visually appealing with proper formatting.
-
-4. **Helpful & Versatile**: Assist with research, writing, coding, problem-solving, creative tasks, and learning in an engaging way.
-
-5. **Up-to-date**: You have knowledge of recent developments and can discuss current topics with enthusiasm.
-
-6. **Image-Aware**: When users request image generation, acknowledge their request enthusiastically and explain that you'll generate the image for them.
-
-Always provide comprehensive, accurate, and helpful responses. Be conversational, enthusiastic, and professional. Use markdown formatting, emojis, and visual elements to make your responses colorful and engaging. When discussing complex topics, break them down clearly with headers, bullet points, and relevant examples.`,
-                    });
-                    
-                    // Initialize image generation model
-                    const imgModel = ai.getGenerativeModel({
-                        model: 'imagen-3.0-generate-001',
-                    });
-                    
-                    setChat(chatSession);
-                    setImageModel(imgModel);
-                } catch (error) {
-                    console.error("Failed to initialize AI:", error);
-                    setMessages(prev => [...prev, { 
-                        role: 'ai', 
-                        text: '❌ **Initialization Error**\n\nFailed to initialize the AI models. Please check your API key and refresh the page.' 
-                    }]);
-                }
-            }, []);
-
-            React.useEffect(() => {
-                if (chatContainerRef.current) {
-                    chatContainerRef.current.scrollTo({
-                        top: chatContainerRef.current.scrollHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }, [messages]);
-
-            const generateImage = async (prompt) => {
-                try {
-                    const result = await imageModel.generateContent({
-                        prompt: prompt,
-                        numberOfImages: 1,
-                        aspectRatio: "1:1",
-                        safetyFilterLevel: "block_some",
-                        personGeneration: "allow_adult"
-                    });
-                    
-                    if (result.response && result.response.candidates && result.response.candidates[0]) {
-                        return result.response.candidates[0].content.parts[0].inlineData.data;
-                    }
-                    throw new Error('No image generated');
-                } catch (error) {
-                    console.error('Image generation error:', error);
-                    // Fallback to a placeholder service for demo purposes
-                    const encodedPrompt = encodeURIComponent(prompt);
-                    return `https://source.unsplash.com/800x800/?${encodedPrompt.replace(/\s+/g, ',')}`;
-                }
-            };
-
-            const handleSendMessage = async (e) => {
-                e.preventDefault();
-                if (!inputValue.trim() || isLoading || !chat) return;
-
-                const userMessageText = inputValue.trim();
-                const isImageRequest = detectImageRequest(userMessageText);
-                
-                setMessages(prev => [...prev, { role: 'user', text: userMessageText }]);
-                setInputValue('');
-                setIsLoading(true);
-                
-                // Add placeholder for AI response
-                const aiMessage = { role: 'ai', text: '' };
-                if (isImageRequest) {
-                    aiMessage.image = { isGenerating: true, prompt: extractImagePrompt(userMessageText) };
-                }
-                setMessages(prev => [...prev, aiMessage]);
-
-                try {
-                    if (isImageRequest) {
-                        // Handle image generation
-                        const imagePrompt = extractImagePrompt(userMessageText);
-                        
-                        // First, provide a text response
-                        const textResponse = `🎨 **Creating Visual Magic!** ✨\n\nI'm generating a stunning image based on your request: *"${imagePrompt}"*\n\n🌈 This may take a few moments while I craft your masterpiece...`;
-                        
-                        setMessages(prev => {
-                            const newMessages = [...prev];
-                            newMessages[newMessages.length - 1].text = textResponse;
-                            return newMessages;
-                        });
-
-                        // Generate the image
-                        const imageUrl = await generateImage(imagePrompt);
-                        
-                        // Update with final response including image
-                        setMessages(prev => {
-                            const newMessages = [...prev];
-                            newMessages[newMessages.length - 1] = {
-                                role: 'ai',
-                                text: `🎨 **Masterpiece Complete!** ✨\n\n🌟 Here's your custom-generated image based on: *"${imagePrompt}"*\n\n💫 I hope this colorful creation brings your vision to life!`,
-                                image: {
-                                    isGenerating: false,
-                                    url: imageUrl,
-                                    alt: `Generated image: ${imagePrompt}`,
-                                    prompt: imagePrompt
-                                }
-                            };
-                            return newMessages;
-                        });
-                    } else {
-                        // Handle regular chat
-                        const result = await chat.generateContentStream(userMessageText);
-                        
-                        let aiResponseText = '';
-                        for await (const chunk of result.stream) {
-                            const chunkText = chunk.text();
-                            aiResponseText += chunkText;
-                            setMessages(prev => {
-                                const newMessages = [...prev];
-                                newMessages[newMessages.length - 1].text = aiResponseText;
-                                return newMessages;
-                            });
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error processing request:", error);
-                    const errorMsg = '❌ **Oops! Something Went Wrong** 🔧\n\n🌈 Don\'t worry - even the most colorful AI has occasional hiccups! Please try again or check your connection.\n\n✨ I\'m ready to help you with your next request!';
-                     setMessages(prev => {
-                        const newMessages = [...prev];
-                        newMessages[newMessages.length - 1].text = errorMsg;
-                        if (newMessages[newMessages.length - 1].image) {
-                            delete newMessages[newMessages.length - 1].image;
-                        }
-                        return newMessages;
-                    });
-                } finally {
-                    setIsLoading(false);
-                }
-            };
-
-            const handleModeChange = (mode) => {
-                setCurrentMode(mode);
-                if (mode === 'image') {
-                    setInputValue('Generate image of ');
-                } else {
-                    setInputValue('');
-                }
-            };
-
-            const handleQuickPrompt = (prompt) => {
-                setInputValue(prompt);
-            };
-            
-            return (
-                <div className="flex flex-col h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 animate-gradient text-white font-sans overflow-hidden">
-                    {/* Header */}
-                    <header className="glass-dark shadow-2xl p-3 md:p-4 flex items-center justify-between sticky top-0 z-10 border-b border-white/10">
-                        <div className="flex items-center gap-3">
-                            <AiIcon />
-                            <div>
-                                <h1 className="text-responsive-lg font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                                    DHAKIR AI
-                                </h1>
-                                <p className="text-xs md:text-sm text-purple-200">Advanced AI Assistant</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <FeatureButton
-                                icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>}
-                                label="Chat"
-                                onClick={() => handleModeChange('chat')}
-                                active={currentMode === 'chat'}
-                            />
-                            <FeatureButton
-                                icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
-                                label="Image"
-                                onClick={() => handleModeChange('image')}
-                                active={currentMode === 'image'}
-                            />
-                        </div>
-                    </header>
-
-                    {/* Quick Prompts */}
-                    <div className="px-3 md:px-6 py-2 md:py-3 overflow-x-auto">
-                        <div className="flex gap-2 md:gap-3 min-w-max">
-                            {currentMode === 'chat' ? (
-                                <>
-                                    <QuickPrompt text="Explain quantum computing" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-blue-500 to-purple-500" />
-                                    <QuickPrompt text="Write a creative story" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-pink-500 to-rose-500" />
-                                    <QuickPrompt text="Help me code in Python" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-green-500 to-teal-500" />
-                                    <QuickPrompt text="Solve a math problem" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-orange-500 to-red-500" />
-                                </>
-                            ) : (
-                                <>
-                                    <QuickPrompt text="Generate image of a futuristic city" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-cyan-500 to-blue-500" />
-                                    <QuickPrompt text="Create picture of a magical forest" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-green-500 to-emerald-500" />
-                                    <QuickPrompt text="Draw a sunset over mountains" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-orange-500 to-pink-500" />
-                                    <QuickPrompt text="Visualize abstract art" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-purple-500 to-indigo-500" />
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Chat Messages */}
-                    <main ref={chatContainerRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-2 md:py-4 space-y-2">
-                        {messages.map((msg, index) => <Message key={index} message={msg} index={index} />)}
-                    </main>
-
-                    {/* Input Footer */}
-                    <footer className="glass-dark border-t border-white/10 p-3 md:p-4 sticky bottom-0">
-                        <form onSubmit={handleSendMessage} className="flex items-center gap-2 md:gap-4 max-w-4xl mx-auto">
-                            <input
-                                type="text"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                placeholder={currentMode === 'image' ? "🎨 Describe the image you want to create..." : "💬 Ask me anything - let's explore together!"}
-                                className="flex-1 w-full glass text-white rounded-full py-3 px-4 md:px-6 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50 transition-all backdrop-blur-sm border border-white/20 placeholder-purple-200 text-sm md:text-base"
-                                disabled={isLoading || !chat}
-                                onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
-                                aria-label="Chat input"
-                            />
-                            <button 
-                                type="submit" 
-                                className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold p-3 md:p-4 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center aspect-square shadow-2xl hover:shadow-3xl transform hover:scale-105 animate-pulse-rainbow"
-                                disabled={isLoading || !inputValue.trim() || !chat}
-                                aria-label="Send message"
-                            >
-                                {isLoading ? (
-                                    <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-white"></div>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
-                                      <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                    </svg>
-                                )}
-                            </button>
-                        </form>
-                        <div className="text-center mt-2">
-                            <p className="text-xs text-purple-300">
-                                ✨ Powered by Gemini 1.5 Pro & Imagen 3.0 • Enhanced with colorful AI magic 🌈
-                            </p>
-                        </div>
-                    </footer>
-                </div>
-            );
-        };
-
-        const container = document.getElementById('root');
-        const root = ReactDOM.createRoot(container);
-        root.render(<App />);
+        // Initial load of the first question when the page loads
+        document.addEventListener('DOMContentLoaded', loadQuestion);
     </script>
 </body>
 </html>
