@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DHAKIR AI - Advanced AI Assistant</title>
+    <!-- Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM from CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Standalone for JSX/TSX transpilation in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Markdown parser for rendering AI responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        /* Custom Tailwind Configuration */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Advanced Animations */
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse-rainbow {
+            0%, 100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.5); }
+            25% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); }
+            75% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.5); }
+        }
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes bounce-in {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes typing-dots {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+        @keyframes shimmer-rainbow {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        /* Custom Classes */
+        .animate-gradient {
+            background-size: 400% 400%;
+            animation: gradient-shift 8s ease infinite;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-pulse-rainbow {
+            animation: pulse-rainbow 3s ease-in-out infinite;
+        }
+        .animate-slide-in-left {
+            animation: slide-in-left 0.6s ease-out forwards;
+        }
+        .animate-slide-in-right {
+            animation: slide-in-right 0.6s ease-out forwards;
+        }
+        .animate-bounce-in {
+            animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+        .animate-typing-dots {
+            animation: typing-dots 1.4s infinite;
+        }
+        .animate-shimmer-rainbow {
+            background: linear-gradient(90deg, 
+                #ec4899 0%, #3b82f6 25%, #10b981 50%, #f59e0b 75%, #ec4899 100%);
+            background-size: 200px 100%;
+            animation: shimmer-rainbow 2s infinite;
+        }
+        /* Gradient Backgrounds */
+        .bg-gradient-cosmic {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .bg-gradient-sunset {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        }
+        .bg-gradient-ocean {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .bg-gradient-forest {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .bg-gradient-fire {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+        }
+        /* Glass Morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, #1f2937, #374151);
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ec4899, #3b82f6);
+            border-radius: 6px;
+            border: 2px solid #1f2937;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #be185d, #1d4ed8);
+        }
+        /* Responsive Typography */
+        @media (max-width: 640px) {
+            .text-responsive-xl { font-size: 1.5rem; }
+            .text-responsive-lg { font-size: 1.25rem; }
+            .text-responsive-base { font-size: 1rem; }
+            .text-responsive-sm { font-size: 0.875rem; }
+        }
+        @media (min-width: 641px) {
+            .text-responsive-xl { font-size: 2rem; }
+            .text-responsive-lg { font-size: 1.5rem; }
+            .text-responsive-base { font-size: 1.125rem; }
+            .text-responsive-sm { font-size: 1rem; }
+        }
+        /* Prose Styling */
+        .prose-colorful h1, .prose-colorful h2, .prose-colorful h3 {
+            background: linear-gradient(135deg, #ec4899, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .prose-colorful code {
+            background: linear-gradient(135deg, #ec4899, #3b82f6);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+        }
+        .prose-colorful pre {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 0.75rem;
+        }
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .mobile-padding { padding: 1rem; }
+            .mobile-text { font-size: 0.875rem; }
+            .mobile-button { padding: 0.5rem 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white antialiased min-h-screen">
+    <div id="root"></div>
+    
+    <script type="text/babel" data-type="module">
+        // Import from esm.sh CDN which bundles NPM packages for browser use
+        import { GoogleGenAI } from 'https://esm.sh/@google/genai';
+
+        // --- CONSTANTS & CONFIGURATION ---
+        
+        // IMPORTANT: In a real-world application, this key should be managed on a secure backend server
+        // to avoid exposing it publicly. For this demo, it's set directly.
+        const API_KEY = "AIzaSyCuP97gUBnrnCq1IJFcWRCQDJhldF6jlsY";
+
+        // --- HELPER FUNCTIONS ---
+
+        const renderMarkdown = (text) => {
+            // Configure marked to add line breaks and highlight code
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                highlight: function(code, lang) {
+                    return code; // Simple highlighting, could be enhanced with Prism.js
+                }
+            });
+            return { __html: marked.parse(text) };
+        };
+
+        const detectImageRequest = (text) => {
+            const imageKeywords = [
+                'generate image', 'create image', 'make image', 'draw', 'paint', 'sketch',
+                'generate picture', 'create picture', 'make picture', 'show me', 'visualize',
+                'imagen', 'picture of', 'image of', 'photo of', 'illustration of'
+            ];
+            return imageKeywords.some(keyword => text.toLowerCase().includes(keyword));
+        };
+
+        const extractImagePrompt = (text) => {
+            // Remove common prefixes and extract the core prompt
+            const cleanText = text
+                .replace(/^(generate|create|make|draw|paint|sketch|show me|visualize)\s+(an?\s+)?(image|picture|photo|illustration)\s+(of\s+)?/i, '')
+                .replace(/^(imagen)\s*/i, '')
+                .trim();
+            return cleanText || text;
+        };
+        
+        // --- REACT COMPONENTS ---
+
+        const UserIcon = () => (
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white flex-shrink-0 shadow-2xl animate-pulse-rainbow">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+        );
+
+        const AiIcon = () => (
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-2xl animate-float">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+                    <path d="M19 15l.94 2.06L22 18l-2.06.94L19 21l-.94-2.06L16 18l2.06-.94L19 15z"/>
+                    <path d="M5 9l.94 2.06L8 12l-2.06.94L5 15l-.94-2.06L2 12l2.06-.94L5 9z"/>
+                </svg>
+            </div>
+        );
+
+        const ImagePlaceholder = ({ isGenerating }) => (
+            <div className={`w-full h-48 md:h-64 rounded-2xl flex items-center justify-center border-2 border-dashed ${
+                isGenerating 
+                    ? 'animate-shimmer-rainbow border-transparent' 
+                    : 'border-purple-400 bg-gradient-to-br from-purple-900/30 to-pink-900/30'
+            }`}>
+                <div className="text-center">
+                    {isGenerating ? (
+                        <>
+                            <div className="relative">
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-transparent bg-gradient-to-r from-pink-500 to-violet-500 animate-spin mx-auto mb-4"></div>
+                                <div className="absolute inset-0 w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-white/20 mx-auto"></div>
+                            </div>
+                            <p className="text-sm md:text-base text-white font-medium animate-pulse">Creating your masterpiece...</p>
+                            <div className="flex justify-center mt-2 space-x-1">
+                                <div className="w-2 h-2 bg-pink-400 rounded-full animate-typing-dots"></div>
+                                <div className="w-2 h-2 bg-purple-400 rounded-full animate-typing-dots" style={{animationDelay: '0.2s'}}></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full animate-typing-dots" style={{animationDelay: '0.4s'}}></div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <svg className="w-16 h-16 md:w-20 md:h-20 text-purple-300 mx-auto mb-4 animate-bounce-in" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p className="text-sm md:text-base text-purple-200 font-medium">Your image will appear here</p>
+                        </>
+                    )}
+                </div>
+            </div>
+        );
+
+        const GeneratedImage = ({ src, alt, prompt }) => (
+            <div className="my-6 animate-bounce-in">
+                <div className="relative group">
+                    <img 
+                        src={src} 
+                        alt={alt} 
+                        className="w-full max-w-lg rounded-2xl shadow-2xl border-2 border-gradient-to-r from-pink-500 to-violet-500 transition-transform duration-300 group-hover:scale-105"
+                        onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'block';
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="hidden bg-gradient-to-r from-red-500/20 to-pink-500/20 glass border border-red-400/30 rounded-xl p-4 mt-4">
+                    <p className="text-red-300 text-sm font-medium">✨ Failed to load generated image</p>
+                </div>
+                <div className="mt-4 p-3 glass-dark rounded-xl">
+                    <p className="text-xs md:text-sm text-purple-200 italic">
+                        <span className="text-pink-400 font-semibold">Prompt:</span> "{prompt}"
+                    </p>
+                </div>
+            </div>
+        );
+
+        const Message = ({ message, index }) => {
+            const isUser = message.role === 'user';
+            const isEmptyAiResponse = !isUser && message.text.trim() === '';
+
+            return (
+                <div className={`flex items-start gap-3 md:gap-4 my-6 md:my-8 ${
+                    isUser ? 'animate-slide-in-right' : 'animate-slide-in-left'
+                }`}>
+                    {!isUser && <AiIcon />}
+                    <div className={`max-w-[85%] md:max-w-4xl p-4 md:p-6 rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl ${
+                        isUser 
+                            ? 'bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-br-md ml-auto glass' 
+                            : 'bg-gradient-to-br from-gray-800/80 via-gray-700/80 to-gray-600/80 rounded-bl-md glass-dark'
+                    }`}>
+                       {isEmptyAiResponse ? (
+                           <div className="flex items-center justify-center space-x-2 py-2">
+                               <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full animate-typing-dots"></div>
+                               <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-typing-dots" style={{animationDelay: '0.2s'}}></div>
+                               <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full animate-typing-dots" style={{animationDelay: '0.4s'}}></div>
+                           </div>
+                       ) : (
+                           <>
+                               <div className={`prose prose-invert prose-colorful max-w-none ${
+                                   isUser ? 'prose-p:my-2 text-white' : 'prose-p:my-2 text-gray-100'
+                               }`} dangerouslySetInnerHTML={renderMarkdown(message.text)} />
+                               {message.image && (
+                                   message.image.isGenerating ? 
+                                   <ImagePlaceholder isGenerating={true} /> :
+                                   <GeneratedImage src={message.image.url} alt={message.image.alt} prompt={message.image.prompt} />
+                               )}
+                           </>
+                       )}
+                    </div>
+                    {isUser && <UserIcon />}
+                </div>
+            );
+        };
+
+        const FeatureButton = ({ icon, label, onClick, active }) => (
+            <button
+                onClick={onClick}
+                className={`flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
+                    active 
+                        ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg animate-pulse-rainbow' 
+                        : 'glass text-gray-200 hover:glass-dark hover:text-white hover:shadow-lg'
+                }`}
+            >
+                {icon}
+                <span className="hidden sm:inline">{label}</span>
+            </button>
+        );
+
+        const QuickPrompt = ({ text, onClick, gradient }) => (
+            <button
+                onClick={() => onClick(text)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 glass hover:glass-dark ${gradient} text-white shadow-lg hover:shadow-xl`}
+            >
+                {text}
+            </button>
+        );
+        
+        const App = () => {
+            const [messages, setMessages] = React.useState([
+                { 
+                    role: 'ai', 
+                    text: `# 🌟 Welcome to DHAKIR AI! 
+
+I'm your **advanced AI assistant** powered by cutting-edge technology and bursting with colorful personality! ✨
+
+## 🧠 **Knowledge Universe**
+- 🔬 **Science & Technology** - From quantum physics to AI breakthroughs
+- 📚 **Literature & Arts** - Creative writing, analysis, and inspiration  
+- 🧮 **Mathematics** - Complex calculations to simple explanations
+- 🌍 **History & Culture** - Explore civilizations and traditions
+- 💻 **Programming** - Code assistance across all languages
+- 🎯 **Problem Solving** - Strategic thinking and solutions
+
+## 🎨 **Image Generation Magic**
+- ✨ Create **stunning visuals** from your imagination
+- 🖼️ Generate **artwork, illustrations, and concepts**
+- 🌈 Bring your **wildest ideas to life**
+- 📸 Professional-quality **images in seconds**
+
+## 💫 **How to Interact**
+- 💬 **Ask me anything** - I love complex challenges!
+- 🎨 **For images**: Say *"generate image of..."* or *"create picture of..."*
+- 🚀 **Be creative** - I'm here to explore ideas with you!
+
+**What colorful adventure shall we embark on today?** 🌈` 
+                }
+            ]);
+            const [inputValue, setInputValue] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
+            const [chat, setChat] = React.useState(null);
+            const [imageModel, setImageModel] = React.useState(null);
+            const [currentMode, setCurrentMode] = React.useState('chat'); // 'chat' or 'image'
+            const chatContainerRef = React.useRef(null);
+            
+            React.useEffect(() => {
+                try {
+                    const ai = new GoogleGenAI(API_KEY);
+                    
+                    // Initialize chat model with enhanced system instruction
+                    const chatSession = ai.getGenerativeModel({
+                        model: 'gemini-1.5-pro-latest',
+                        systemInstruction: `You are DHAKIR AI, an advanced AI assistant with a vibrant, colorful personality and extensive knowledge across all domains. You are:
+
+1. **Highly Knowledgeable**: You have deep understanding of science, technology, history, literature, arts, mathematics, philosophy, current events, and more.
+
+2. **Colorful & Engaging**: Use emojis, formatting, and enthusiastic language to make responses vibrant and engaging. Be creative with your presentation.
+
+3. **Analytical & Thoughtful**: Provide detailed, well-reasoned responses with examples and context, but make them visually appealing with proper formatting.
+
+4. **Helpful & Versatile**: Assist with research, writing, coding, problem-solving, creative tasks, and learning in an engaging way.
+
+5. **Up-to-date**: You have knowledge of recent developments and can discuss current topics with enthusiasm.
+
+6. **Image-Aware**: When users request image generation, acknowledge their request enthusiastically and explain that you'll generate the image for them.
+
+Always provide comprehensive, accurate, and helpful responses. Be conversational, enthusiastic, and professional. Use markdown formatting, emojis, and visual elements to make your responses colorful and engaging. When discussing complex topics, break them down clearly with headers, bullet points, and relevant examples.`,
+                    });
+                    
+                    // Initialize image generation model
+                    const imgModel = ai.getGenerativeModel({
+                        model: 'imagen-3.0-generate-001',
+                    });
+                    
+                    setChat(chatSession);
+                    setImageModel(imgModel);
+                } catch (error) {
+                    console.error("Failed to initialize AI:", error);
+                    setMessages(prev => [...prev, { 
+                        role: 'ai', 
+                        text: '❌ **Initialization Error**\n\nFailed to initialize the AI models. Please check your API key and refresh the page.' 
+                    }]);
+                }
+            }, []);
+
+            React.useEffect(() => {
+                if (chatContainerRef.current) {
+                    chatContainerRef.current.scrollTo({
+                        top: chatContainerRef.current.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }, [messages]);
+
+            const generateImage = async (prompt) => {
+                try {
+                    const result = await imageModel.generateContent({
+                        prompt: prompt,
+                        numberOfImages: 1,
+                        aspectRatio: "1:1",
+                        safetyFilterLevel: "block_some",
+                        personGeneration: "allow_adult"
+                    });
+                    
+                    if (result.response && result.response.candidates && result.response.candidates[0]) {
+                        return result.response.candidates[0].content.parts[0].inlineData.data;
+                    }
+                    throw new Error('No image generated');
+                } catch (error) {
+                    console.error('Image generation error:', error);
+                    // Fallback to a placeholder service for demo purposes
+                    const encodedPrompt = encodeURIComponent(prompt);
+                    return `https://source.unsplash.com/800x800/?${encodedPrompt.replace(/\s+/g, ',')}`;
+                }
+            };
+
+            const handleSendMessage = async (e) => {
+                e.preventDefault();
+                if (!inputValue.trim() || isLoading || !chat) return;
+
+                const userMessageText = inputValue.trim();
+                const isImageRequest = detectImageRequest(userMessageText);
+                
+                setMessages(prev => [...prev, { role: 'user', text: userMessageText }]);
+                setInputValue('');
+                setIsLoading(true);
+                
+                // Add placeholder for AI response
+                const aiMessage = { role: 'ai', text: '' };
+                if (isImageRequest) {
+                    aiMessage.image = { isGenerating: true, prompt: extractImagePrompt(userMessageText) };
+                }
+                setMessages(prev => [...prev, aiMessage]);
+
+                try {
+                    if (isImageRequest) {
+                        // Handle image generation
+                        const imagePrompt = extractImagePrompt(userMessageText);
+                        
+                        // First, provide a text response
+                        const textResponse = `🎨 **Creating Visual Magic!** ✨\n\nI'm generating a stunning image based on your request: *"${imagePrompt}"*\n\n🌈 This may take a few moments while I craft your masterpiece...`;
+                        
+                        setMessages(prev => {
+                            const newMessages = [...prev];
+                            newMessages[newMessages.length - 1].text = textResponse;
+                            return newMessages;
+                        });
+
+                        // Generate the image
+                        const imageUrl = await generateImage(imagePrompt);
+                        
+                        // Update with final response including image
+                        setMessages(prev => {
+                            const newMessages = [...prev];
+                            newMessages[newMessages.length - 1] = {
+                                role: 'ai',
+                                text: `🎨 **Masterpiece Complete!** ✨\n\n🌟 Here's your custom-generated image based on: *"${imagePrompt}"*\n\n💫 I hope this colorful creation brings your vision to life!`,
+                                image: {
+                                    isGenerating: false,
+                                    url: imageUrl,
+                                    alt: `Generated image: ${imagePrompt}`,
+                                    prompt: imagePrompt
+                                }
+                            };
+                            return newMessages;
+                        });
+                    } else {
+                        // Handle regular chat
+                        const result = await chat.generateContentStream(userMessageText);
+                        
+                        let aiResponseText = '';
+                        for await (const chunk of result.stream) {
+                            const chunkText = chunk.text();
+                            aiResponseText += chunkText;
+                            setMessages(prev => {
+                                const newMessages = [...prev];
+                                newMessages[newMessages.length - 1].text = aiResponseText;
+                                return newMessages;
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error processing request:", error);
+                    const errorMsg = '❌ **Oops! Something Went Wrong** 🔧\n\n🌈 Don\'t worry - even the most colorful AI has occasional hiccups! Please try again or check your connection.\n\n✨ I\'m ready to help you with your next request!';
+                     setMessages(prev => {
+                        const newMessages = [...prev];
+                        newMessages[newMessages.length - 1].text = errorMsg;
+                        if (newMessages[newMessages.length - 1].image) {
+                            delete newMessages[newMessages.length - 1].image;
+                        }
+                        return newMessages;
+                    });
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleModeChange = (mode) => {
+                setCurrentMode(mode);
+                if (mode === 'image') {
+                    setInputValue('Generate image of ');
+                } else {
+                    setInputValue('');
+                }
+            };
+
+            const handleQuickPrompt = (prompt) => {
+                setInputValue(prompt);
+            };
+            
+            return (
+                <div className="flex flex-col h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 animate-gradient text-white font-sans overflow-hidden">
+                    {/* Header */}
+                    <header className="glass-dark shadow-2xl p-3 md:p-4 flex items-center justify-between sticky top-0 z-10 border-b border-white/10">
+                        <div className="flex items-center gap-3">
+                            <AiIcon />
+                            <div>
+                                <h1 className="text-responsive-lg font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                                    DHAKIR AI
+                                </h1>
+                                <p className="text-xs md:text-sm text-purple-200">Advanced AI Assistant</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <FeatureButton
+                                icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>}
+                                label="Chat"
+                                onClick={() => handleModeChange('chat')}
+                                active={currentMode === 'chat'}
+                            />
+                            <FeatureButton
+                                icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
+                                label="Image"
+                                onClick={() => handleModeChange('image')}
+                                active={currentMode === 'image'}
+                            />
+                        </div>
+                    </header>
+
+                    {/* Quick Prompts */}
+                    <div className="px-3 md:px-6 py-2 md:py-3 overflow-x-auto">
+                        <div className="flex gap-2 md:gap-3 min-w-max">
+                            {currentMode === 'chat' ? (
+                                <>
+                                    <QuickPrompt text="Explain quantum computing" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-blue-500 to-purple-500" />
+                                    <QuickPrompt text="Write a creative story" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-pink-500 to-rose-500" />
+                                    <QuickPrompt text="Help me code in Python" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-green-500 to-teal-500" />
+                                    <QuickPrompt text="Solve a math problem" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-orange-500 to-red-500" />
+                                </>
+                            ) : (
+                                <>
+                                    <QuickPrompt text="Generate image of a futuristic city" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-cyan-500 to-blue-500" />
+                                    <QuickPrompt text="Create picture of a magical forest" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-green-500 to-emerald-500" />
+                                    <QuickPrompt text="Draw a sunset over mountains" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-orange-500 to-pink-500" />
+                                    <QuickPrompt text="Visualize abstract art" onClick={handleQuickPrompt} gradient="bg-gradient-to-r from-purple-500 to-indigo-500" />
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Chat Messages */}
+                    <main ref={chatContainerRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-2 md:py-4 space-y-2">
+                        {messages.map((msg, index) => <Message key={index} message={msg} index={index} />)}
+                    </main>
+
+                    {/* Input Footer */}
+                    <footer className="glass-dark border-t border-white/10 p-3 md:p-4 sticky bottom-0">
+                        <form onSubmit={handleSendMessage} className="flex items-center gap-2 md:gap-4 max-w-4xl mx-auto">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                placeholder={currentMode === 'image' ? "🎨 Describe the image you want to create..." : "💬 Ask me anything - let's explore together!"}
+                                className="flex-1 w-full glass text-white rounded-full py-3 px-4 md:px-6 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50 transition-all backdrop-blur-sm border border-white/20 placeholder-purple-200 text-sm md:text-base"
+                                disabled={isLoading || !chat}
+                                onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
+                                aria-label="Chat input"
+                            />
+                            <button 
+                                type="submit" 
+                                className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold p-3 md:p-4 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center aspect-square shadow-2xl hover:shadow-3xl transform hover:scale-105 animate-pulse-rainbow"
+                                disabled={isLoading || !inputValue.trim() || !chat}
+                                aria-label="Send message"
+                            >
+                                {isLoading ? (
+                                    <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-white"></div>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                                    </svg>
+                                )}
+                            </button>
+                        </form>
+                        <div className="text-center mt-2">
+                            <p className="text-xs text-purple-300">
+                                ✨ Powered by Gemini 1.5 Pro & Imagen 3.0 • Enhanced with colorful AI magic 🌈
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+</html>
