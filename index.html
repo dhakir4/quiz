@@ -193,319 +193,103 @@
     <script>
         // Quiz data: array of objects, each containing questions and options in both languages.
         const quizQuestions = [
-            // Questions based on 1.2.1 Closure
+            // Multiple Choice Questions based on PDF content
             {
-                question_en: "Are whole numbers closed under addition? For example, $0+5=5$.",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0+5=5$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "When you add two rational numbers, is the result always a rational number? For example, $1/2 + 1/3 = 5/6$. This property is called:",
+                options_en: ["Commutativity", "Associativity", "Closure", "Distributivity"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകൾ കൂട്ടിച്ചേർക്കുമ്പോൾ, ഫലം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $1/2 + 1/3 = 5/6$. ഈ ഗുണത്തെ വിളിക്കുന്നു:",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "സംവൃത നിയമം", "വിഭജന നിയമം"],
+                answer: 2
             },
             {
-                question_en: "Is $5-7=-2$ an example showing whole numbers are NOT closed under subtraction?",
-                options_en: ["Yes", "No"],
-                question_ml: "$5-7=-2$ എന്നത് അഖണ്ഡസംഖ്യകൾ വ്യവകലനത്തിന് കീഴിൽ സംവൃതമല്ലെന്ന് കാണിക്കുന്ന ഉദാഹരണമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "Is the set of whole numbers closed under subtraction? For example, $5-7=-2$.",
+                options_en: ["Yes", "No", "Sometimes", "Always"],
+                question_ml: "അഖണ്ഡസംഖ്യകൾ വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5-7=-2$.",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
+                answer: 1
             },
             {
-                question_en: "Are whole numbers closed under multiplication? For example, $0 \times 3 = 0$.",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0 \times 3 = 0$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "If you multiply any whole number by another whole number, is the result always a whole number? This is the ______ property.",
+                options_en: ["Commutative", "Associative", "Closure", "Identity"],
+                question_ml: "ഏതെങ്കിലും ഒരു അഖണ്ഡസംഖ്യയെ മറ്റൊരു അഖണ്ഡസംഖ്യകൊണ്ട് ഗുണിക്കുമ്പോൾ, ഫലം എല്ലായ്പ്പോഴും ഒരു അഖണ്ഡസംഖ്യയായിരിക്കുമോ? ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "സഹചാരി", "സംവൃത", "തന്മക"],
+                answer: 2
             },
             {
-                question_en: "Is $5 \div 8 = 5/8$ an example showing whole numbers are NOT closed under division?",
-                options_en: ["Yes", "No"],
-                question_ml: "$5 \div 8 = 5/8$ എന്നത് അഖണ്ഡസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമല്ലെന്ന് കാണിക്കുന്ന ഉദാഹരണമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "Is $5 \div 8 = 5/8$ an example showing whole numbers are NOT closed under which operation?",
+                options_en: ["Addition", "Subtraction", "Multiplication", "Division"],
+                question_ml: "$5 \div 8 = 5/8$ എന്നത് അഖണ്ഡസംഖ്യകൾ ഏത് ക്രിയയ്ക്ക് കീഴിൽ സംവൃതമല്ലെന്ന് കാണിക്കുന്ന ഉദാഹരണമാണ്?",
+                options_ml: ["സങ്കലനം", "വ്യവകലനം", "ഗുണനം", "ഹരണം"],
+                answer: 3
             },
             {
                 question_en: "Are integers closed under addition? For example, $-6+5=-1$.",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Only for positive numbers", "Only for negative numbers"],
                 question_ml: "പൂർണ്ണസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $-6+5=-1$.",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "പോസിറ്റീവ് സംഖ്യകൾക്ക് മാത്രം", "നെഗറ്റീവ് സംഖ്യകൾക്ക് മാത്രം"],
                 answer: 0
             },
             {
-                question_en: "Are integers closed under subtraction? For example, $7-5=2$ and $-6-8=-14$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $7-5=2$ കൂടാതെ $-6-8=-14$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "Which property states that the result of an operation on two elements of a set is always within the same set?",
+                options_en: ["Commutativity", "Associativity", "Closure", "Distributivity"],
+                question_ml: "ഒരു ഗണത്തിലെ രണ്ട് അംഗങ്ങളിൽ ഒരു ക്രിയ ചെയ്യുമ്പോൾ ലഭിക്കുന്ന ഫലം എല്ലായ്പ്പോഴും അതേ ഗണത്തിനുള്ളിൽ തന്നെയായിരിക്കും എന്ന് പറയുന്ന ഗുണം ഏതാണ്?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "സംവൃത നിയമം", "വിഭജന നിയമം"],
+                answer: 2
             },
             {
-                question_en: "Are integers closed under multiplication? For example, $5 \times 8 = 40$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \times 8 = 40$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "If you change the order of two rational numbers when adding them, does the answer stay the same? For example, $2/3 + 1/4 = 1/4 + 2/3$. This is the ______ property.",
+                options_en: ["Associative", "Distributive", "Commutative", "Closure"],
+                question_ml: "രണ്ട് ഭിന്നസംഖ്യകൾ കൂട്ടിച്ചേർക്കുമ്പോൾ അവയുടെ ക്രമം മാറ്റിയാൽ ഉത്തരം അതുതന്നെയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $2/3 + 1/4 = 1/4 + 2/3$. ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "സംവൃത"],
+                answer: 2
             },
             {
-                question_en: "Are integers closed under division? For example, $5 \div 8 = 5/8$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \div 8 = 5/8$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "A rational number can be written in the form $p/q$, where $p$ and $q$ are integers and $q$ is not zero. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "ഒരു ഭിന്നസംഖ്യയെ $p/q$ രൂപത്തിൽ എഴുതാം, ഇവിടെ $p$ ഉം $q$ ഉം പൂർണ്ണസംഖ്യകളും $q$ പൂജ്യമല്ലാത്ത സംഖ്യയുമാണ്. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-            {
-                question_en: "Is the sum of two rational numbers always a rational number? For example, $3/8 + (-5)/7 = -19/56$.",
-                options_en: ["Yes", "No"],
-                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ തുക എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $3/8 + (-5)/7 = -19/56$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is the difference of two rational numbers always a rational number? For example, $-5/7 - 2/3 = -29/21$.",
-                options_en: ["Yes", "No"],
-                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ വ്യത്യാസം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $-5/7 - 2/3 = -29/21$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is the product of two rational numbers always a rational number? For example, $-2/3 \times 4/5 = -8/15$.",
-                options_en: ["Yes", "No"],
-                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ ഗുണനഫലം എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ? ഉദാഹരണത്തിന്, $-2/3 \times 4/5 = -8/15$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Are rational numbers closed under division by zero?",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകൾ പൂജ്യം കൊണ്ടുള്ള ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "If we exclude zero, is the collection of all other rational numbers closed under division?",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂജ്യം ഒഴിവാക്കിയാൽ, മറ്റ് എല്ലാ ഭിന്നസംഖ്യകളുടെയും ശേഖരം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "The property that a set is closed under an operation means that performing the operation on any two elements of the set always results in an element within the same set. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "ഒരു ഗണം ഒരു ക്രിയയ്ക്ക് കീഴിൽ സംവൃതമാണ് എന്നതിനർത്ഥം, ഗണത്തിലെ ഏതെങ്കിലും രണ്ട് അംഗങ്ങളിൽ ആ ക്രിയ ചെയ്യുമ്പോൾ എല്ലായ്പ്പോഴും അതേ ഗണത്തിനുള്ളിൽ ഒരു അംഗം ലഭിക്കുന്നു എന്നാണ്. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-
-            // Questions based on 1.2.2 Commutativity
-            {
-                question_en: "Is addition commutative for whole numbers? For example, $0+7=7+0$.",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ സങ്കലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $0+7=7+0$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is subtraction commutative for whole numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is multiplication commutative for whole numbers? For example, $0 \times 3 = 0$.",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $0 \times 3 = 0$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is division commutative for whole numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is addition commutative for integers? For example, $-6+5=-1$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ സങ്കലനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $-6+5=-1$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is subtraction commutative for integers? For example, $5-(-3)$ is not equal to $-3-5$.",
-                options_en: ["Yes", "No"],
+                question_en: "Is subtraction commutative for integers? For example, $5-(-3)$ is NOT equal to $-3-5$.",
+                options_en: ["Yes", "No", "Always", "Sometimes"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $5-(-3)$ എന്നത് $-3-5$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "എല്ലായ്പ്പോഴും", "ചിലപ്പോൾ"],
                 answer: 1
             },
             {
-                question_en: "Is multiplication commutative for integers? For example, $5 \times 8 = 40$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \times 8 = 40$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "Which property allows you to change the order of numbers in multiplication without changing the result? Example: $3/4 \times 1/2 = 1/2 \times 3/4$.",
+                options_en: ["Associativity", "Distributivity", "Commutativity", "Closure"],
+                question_ml: "ഗുണനത്തിൽ സംഖ്യകളുടെ ക്രമം മാറ്റാതെ ഫലം മാറ്റമില്ലാതെ നിലനിർത്താൻ സഹായിക്കുന്ന ഗുണം ഏതാണ്? ഉദാഹരണം: $3/4 \times 1/2 = 1/2 \times 3/4$.",
+                options_ml: ["സഹചാരി നിയമം", "വിഭജന നിയമം", "ക്രമവിനിമയ നിയമം", "സംവൃത നിയമം"],
+                answer: 2
             },
             {
-                question_en: "Is division commutative for integers? For example, $5 \div 8 = 5/8$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകൾ ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ? ഉദാഹരണത്തിന്, $5 \div 8 = 5/8$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is addition commutative for rational numbers? For example, $-2/3 + 5/7 = 5/7 + (-2/3)$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ സങ്കലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-2/3 + 5/7 = 5/7 + (-2/3)$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is subtraction commutative for rational numbers? For example, $2/3 - 5/4$ is not equal to $5/4 - 2/3$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ വ്യവകലനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $2/3 - 5/4$ എന്നത് $5/4 - 2/3$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is multiplication commutative for rational numbers? For example, $-7/3 \times 6/5 = 6/5 \times (-7/3)$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണനം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-7/3 \times 6/5 = 6/5 \times (-7/3)$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is division commutative for rational numbers? For example, $-5/4 \div 3/7$ is not equal to $3/7 \div (-5/4)$.",
-                options_en: ["Yes", "No"],
+                question_en: "Is division commutative for rational numbers? For example, $-5/4 \div 3/7$ is NOT equal to $3/7 \div (-5/4)$.",
+                options_en: ["Yes", "No", "Always", "Sometimes"],
                 question_ml: "ഭിന്നസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ? ഉദാഹരണത്തിന്, $-5/4 \div 3/7$ എന്നത് $3/7 \div (-5/4)$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "എല്ലായ്പ്പോഴും", "ചിലപ്പോൾ"],
                 answer: 1
             },
             {
-                question_en: "The Commutative property means that changing the order of numbers in an operation does not change the result. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "ക്രമവിനിമയ നിയമം എന്നാൽ ഒരു ക്രിയയിൽ സംഖ്യകളുടെ ക്രമം മാറ്റുന്നത് ഫലത്തെ മാറ്റുന്നില്ല എന്നാണ്. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-
-            // Questions based on 1.2.3 Associativity
-            {
-                question_en: "Is addition associative for whole numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "When you multiply three rational numbers, does grouping them differently change the final answer? For example, $(1/2 \times 2/3) \times 3/4$ gives the same result as $1/2 \times (2/3 \times 3/4)$. This is the ______ property.",
+                options_en: ["Commutative", "Distributive", "Associative", "Closure"],
+                question_ml: "മൂന്ന് ഭിന്നസംഖ്യകൾ ഗുണിക്കുമ്പോൾ, അവയെ വ്യത്യസ്തമായി ഗ്രൂപ്പുചെയ്താൽ അന്തിമ ഉത്തരം മാറുമോ? ഉദാഹരണത്തിന്, $(1/2 \times 2/3) \times 3/4$ എന്നത് $1/2 \times (2/3 \times 3/4)$ ന് തുല്യമായ ഫലം നൽകുന്നു. ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "സംവൃത"],
+                answer: 2
             },
             {
-                question_en: "Is subtraction associative for whole numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is multiplication associative for whole numbers? For example, $7 \times (2 \times 5) = (7 \times 2) \times 5$.",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $7 \times (2 \times 5) = (7 \times 2) \times 5$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is division associative for whole numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is addition associative for integers? For example, $(-2) + [3 + (-4)] = [(-2) + 3] + (-4)$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $(-2) + [3 + (-4)] = [(-2) + 3] + (-4)$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is subtraction associative for integers? For example, $5-(7-3)$ is not equal to $(5-7)-3$.",
-                options_en: ["Yes", "No"],
+                question_en: "Is subtraction associative for integers? For example, $5-(7-3)$ is NOT equal to $(5-7)-3$.",
+                options_en: ["Yes", "No", "Always", "Sometimes"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $5-(7-3)$ എന്നത് $(5-7)-3$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "എല്ലായ്പ്പോഴും", "ചിലപ്പോൾ"],
                 answer: 1
             },
             {
-                question_en: "Is multiplication associative for integers? For example, $5 \times [(-7) \times (-8)] = [5 \times (-7)] \times (-8)$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $5 \times [(-7) \times (-8)] = [5 \times (-7)] \times (-8)$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is division associative for integers? For example, $[(-10) \div 2] \div (-5)$ is not equal to $(-10) \div [2 \div (-5)]$.",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $[(-10) \div 2] \div (-5)$ എന്നത് $(-10) \div [2 \div (-5)]$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is addition associative for rational numbers? For example, $-2/3 + [3/5 + (-5/6)] = [-2/3 + 3/5] + (-5/6)$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $-2/3 + [3/5 + (-5/6)] = [-2/3 + 3/5] + (-5/6)$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is subtraction associative for rational numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ വ്യവകലനം സഹചാരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "Is multiplication associative for rational numbers? For example, $-7/3 \times (5/4 \times 2/9) = (-7/3 \times 5/4) \times 2/9$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണനം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $-7/3 \times (5/4 \times 2/9) = (-7/3 \times 5/4) \times 2/9$.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "Is division associative for rational numbers? For example, $1/2 \div [-1/3 \div 2/5]$ is not equal to $[1/2 \div (-1/3)] \div 2/5$.",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ഹരണം സഹചാരിയാണോ? ഉദാഹരണത്തിന്, $1/2 \div [-1/3 \div 2/5]$ എന്നത് $[1/2 \div (-1/3)] \div 2/5$ ന് തുല്യമല്ല.",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "The Associative property means that changing the grouping of numbers in an operation does not change the result. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "സഹചാരി നിയമം എന്നാൽ ഒരു ക്രിയയിൽ സംഖ്യകളെ ഗ്രൂപ്പുചെയ്യുന്നത് ഫലത്തെ മാറ്റുന്നില്ല എന്നാണ്. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-
-            // Questions based on 1.2.4 The role of zero (0)
-            {
-                question_en: "What is the result when you add 0 to any whole number? For example, $2+0=2$.",
-                options_en: ["The number becomes 0", "The number stays the same", "The number becomes negative", "The number doubles"],
-                question_ml: "ഏതെങ്കിലും ഒരു അഖണ്ഡസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $2+0=2$.",
-                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യ നെഗറ്റീവ് ആകുന്നു", "സംഖ്യ ഇരട്ടിക്കുന്നു"],
-                answer: 1
-            },
-            {
-                question_en: "What is the result when you add 0 to any integer? For example, $-5+0=-5$.",
-                options_en: ["The number becomes 0", "The number stays the same", "The number becomes positive", "The number halves"],
-                question_ml: "ഏതെങ്കിലും ഒരു പൂർണ്ണസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $-5+0=-5$.",
-                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യ പോസിറ്റീവ് ആകുന്നു", "സംഖ്യ പകുതിയാകുന്നു"],
-                answer: 1
+                question_en: "Which property is about how numbers are grouped in an operation without changing the result? Example: $(a+b)+c = a+(b+c)$.",
+                options_en: ["Commutative", "Distributive", "Associative", "Closure"],
+                question_ml: "ഒരു ക്രിയയിൽ സംഖ്യകളെ എങ്ങനെ ഗ്രൂപ്പുചെയ്യുന്നു എന്നതുമായി ബന്ധപ്പെട്ടതും ഫലം മാറ്റാത്തതുമായ ഗുണം ഏതാണ്? ഉദാഹരണം: $(a+b)+c = a+(b+c)$.",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "സംവൃത"],
+                answer: 2
             },
             {
                 question_en: "What is the result when you add 0 to any rational number? For example, $-2/7 + 0 = -2/7$.",
-                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number becomes an integer"],
+                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number doubles"],
                 question_ml: "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യയോട് 0 കൂട്ടിച്ചേർക്കുമ്പോൾ എന്ത് ഫലം ലഭിക്കുന്നു? ഉദാഹരണത്തിന്, $-2/7 + 0 = -2/7$.",
-                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഒരു പൂർണ്ണസംഖ്യ ആകുന്നു"],
+                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഇരട്ടിക്കുന്നു"],
                 answer: 1
             },
             {
@@ -516,27 +300,11 @@
                 answer: 1
             },
             {
-                question_en: "Is zero the additive identity for integers and whole numbers as well?",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂജ്യം പൂർണ്ണസംഖ്യകളുടെയും അഖണ്ഡസംഖ്യകളുടെയും സങ്കലന തന്മകം കൂടിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-
-            // Questions based on 1.2.5 The role of 1
-            {
-                question_en: "What happens when you multiply any whole number by 1? For example, $5 \times 1 = 5$.",
-                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number doubles"],
-                question_ml: "ഏതെങ്കിലും ഒരു അഖണ്ഡസംഖ്യയെ 1 കൊണ്ട് ഗുണിക്കുമ്പോൾ എന്ത് സംഭവിക്കുന്നു? ഉദാഹരണത്തിന്, $5 \times 1 = 5$.",
-                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഇരട്ടിക്കുന്നു"],
-                answer: 1
-            },
-            {
-                question_en: "What happens when you multiply any rational number by 1? For example, $-2/7 \times 1 = -2/7$.",
-                options_en: ["The number becomes 0", "The number stays the same", "The number changes sign", "The number becomes an integer"],
-                question_ml: "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യയെ 1 കൊണ്ട് ഗുണിക്കുമ്പോൾ എന്ത് സംഭവിക്കുന്നു? ഉദാഹരണത്തിന്, $-2/7 \times 1 = -2/7$.",
-                options_ml: ["സംഖ്യ 0 ആകുന്നു", "സംഖ്യ അതുപോലെ നിലനിൽക്കുന്നു", "സംഖ്യയുടെ ചിഹ്നം മാറുന്നു", "സംഖ്യ ഒരു പൂർണ്ണസംഖ്യ ആകുന്നു"],
-                answer: 1
+                question_en: "What number can you multiply any rational number by, and the rational number stays the same? For example, $5/7 \times ? = 5/7$.",
+                options_en: ["0", "-1", "1", "Any rational number"],
+                question_ml: "ഏത് സംഖ്യകൊണ്ട് ഒരു ഭിന്നസംഖ്യയെ ഗുണിച്ചാൽ ആ ഭിന്നസംഖ്യയ്ക്ക് മാറ്റം വരില്ല? ഉദാഹരണത്തിന്, $5/7 \times ? = 5/7$.",
+                options_ml: ["0", "-1", "1", "ഏതെങ്കിലും ഒരു ഭിന്നസംഖ്യ"],
+                answer: 2
             },
             {
                 question_en: "The number 1 is called the ______ identity for rational numbers.",
@@ -546,48 +314,11 @@
                 answer: 1
             },
             {
-                question_en: "Is 1 the multiplicative identity for integers and whole numbers as well?",
-                options_en: ["Yes", "No"],
-                question_ml: "1 പൂർണ്ണസംഖ്യകളുടെയും അഖണ്ഡസംഖ്യകളുടെയും ഗുണന തന്മകം കൂടിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "If $a \times 1 = a$ for any rational number $a$, this is the property of the ______ identity.",
-                options_en: ["Additive", "Multiplicative", "Zero", "Inverse"],
-                question_ml: "ഏതൊരു ഭിന്നസംഖ്യ $a$ യ്ക്കും $a \times 1 = a$ ആണെങ്കിൽ, ഇത് ______ തന്മകത്തിന്റെ ഗുണമാണ്.",
-                options_ml: ["സങ്കലന", "ഗുണന", "പൂജ്യം", "വിപരീത"],
-                answer: 1
-            },
-
-            // Questions based on 1.2.6 Distributivity
-            {
-                question_en: "The property $a \times (b + c) = (a \times b) + (a \times c)$ is called Distributivity of multiplication over addition. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്ന ഗുണത്തെ സങ്കലനത്തിന്മേലുള്ള ഗുണനത്തിന്റെ വിഭജന നിയമം എന്ന് വിളിക്കുന്നു. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-            {
-                question_en: "Does $-3/4 \times (2/3 + (-5/6))$ equal $(-3/4 \times 2/3) + (-3/4 \times -5/6)$ by the Distributive property?",
-                options_en: ["Yes", "No"],
-                question_ml: "വിഭജന നിയമം അനുസരിച്ച് $-3/4 \times (2/3 + (-5/6))$ എന്നത് $(-3/4 \times 2/3) + (-3/4 \times -5/6)$ ന് തുല്യമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "The property $a \times (b - c) = (a \times b) - (a \times c)$ is called Distributivity of multiplication over subtraction. True or False?",
-                options_en: ["True", "False"],
-                question_ml: "$a \times (b - c) = (a \times b) - (a \times c)$ എന്ന ഗുണത്തെ വ്യവകലനത്തിന്മേലുള്ള ഗുണനത്തിന്റെ വിഭജന നിയമം എന്ന് വിളിക്കുന്നു. ശരിയോ തെറ്റോ?",
-                options_ml: ["ശരി", "തെറ്റ്"],
-                answer: 0
-            },
-            {
-                question_en: "If you have $2/5 \times (3/7 - 1/14)$, can you write it as $(2/5 \times 3/7) - (2/5 \times 1/14)$ using distributivity?",
-                options_en: ["Yes", "No"],
-                question_ml: "$2/5 \times (3/7 - 1/14)$ എന്നതിനെ വിഭജന നിയമം ഉപയോഗിച്ച് $(2/5 \times 3/7) - (2/5 \times 1/14)$ എന്ന് എഴുതാൻ കഴിയുമോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
+                question_en: "If you multiply a rational number by a sum of two other rational numbers, can you multiply it by each one separately and then add the results? For example, $1/2 \times (1/3 + 1/4)$ is the same as $(1/2 \times 1/3) + (1/2 \times 1/4)$. This property is called:",
+                options_en: ["Commutativity", "Associativity", "Distributivity", "Closure"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയെ മറ്റ് രണ്ട് ഭിന്നസംഖ്യകളുടെ തുകകൊണ്ട് ഗുണിക്കുമ്പോൾ, ഓരോന്നിനെയും പ്രത്യേകം ഗുണിച്ച് ഫലങ്ങൾ കൂട്ടിച്ചേർക്കാൻ കഴിയുമോ? ഉദാഹരണത്തിന്, $1/2 \times (1/3 + 1/4)$ എന്നത് $(1/2 \times 1/3) + (1/2 \times 1/4)$ ന് തുല്യമാണ്. ഈ ഗുണത്തെ വിളിക്കുന്നു:",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "വിഭജന നിയമം", "സംവൃത നിയമം"],
+                answer: 2
             },
             {
                 question_en: "Distributivity connects multiplication with which other operations?",
@@ -595,15 +326,6 @@
                 question_ml: "വിഭജന നിയമം ഗുണനത്തെ മറ്റ് ഏത് ക്രിയകളുമായി ബന്ധിപ്പിക്കുന്നു?",
                 options_ml: ["സങ്കലനം മാത്രം", "വ്യവകലനം മാത്രം", "സങ്കലനവും വ്യവകലനവും", "ഹരണം മാത്രം"],
                 answer: 2
-            },
-
-            // Mixed Questions based on PDF content
-            {
-                question_en: "Which property is shown by: $3/7 + (-6/11) + (-8/21) + 5/22 = [3/7 + (-8/21)] + [-6/11 + 5/22]$?",
-                options_en: ["Commutativity and Associativity", "Closure and Identity", "Distributivity", "None of these"],
-                question_ml: "$3/7 + (-6/11) + (-8/21) + 5/22 = [3/7 + (-8/21)] + [-6/11 + 5/22]$ എന്നത് ഏത് ഗുണമാണ് കാണിക്കുന്നത്?",
-                options_ml: ["ക്രമവിനിമയ നിയമവും സഹചാരി നിയമവും", "സംവൃത നിയമവും തന്മക നിയമവും", "വിഭജന നിയമം", "ഇതൊന്നുമല്ല"],
-                answer: 0
             },
             {
                 question_en: "The product of two rational numbers is always a ______.",
@@ -613,10 +335,10 @@
                 answer: 2
             },
             {
-                question_en: "Between any two given rational numbers, there are ______ rational numbers.",
-                options_en: ["Only one", "A finite number of", "Countless", "No"],
-                question_ml: "ഏതെങ്കിലും രണ്ട് ഭിന്നസംഖ്യകൾക്കിടയിൽ ______ ഭിന്നസംഖ്യകളുണ്ട്.",
-                options_ml: ["ഒന്നുമാത്രം", "പരിമിതമായ എണ്ണം", "അസംഖ്യം", "ഇല്ല"],
+                question_en: "Between any two given rational numbers, how many rational numbers are there?",
+                options_en: ["Only one", "A finite number of", "Countless", "None"],
+                question_ml: "ഏതെങ്കിലും രണ്ട് ഭിന്നസംഖ്യകൾക്കിടയിൽ എത്ര ഭിന്നസംഖ്യകളുണ്ട്?",
+                options_ml: ["ഒന്നുമാത്രം", "പരിമിതമായ എണ്ണം", "അസംഖ്യം", "ഒന്നുമില്ല"],
                 answer: 2
             },
             {
@@ -625,27 +347,6 @@
                 question_ml: "ശരാശരി എന്ന ആശയം രണ്ട് ഭിന്നസംഖ്യകൾക്കിടയിലുള്ള ഭിന്നസംഖ്യകളെ കണ്ടെത്താൻ സഹായിക്കുന്നു. ശരിയോ തെറ്റോ?",
                 options_ml: ["ശരി", "തെറ്റ്"],
                 answer: 0
-            },
-            {
-                question_en: "Is the division of rational numbers always closed if we exclude division by zero?",
-                options_en: ["Yes", "No"],
-                question_ml: "പൂജ്യം കൊണ്ടുള്ള ഹരണം ഒഴിവാക്കിയാൽ, ഭിന്നസംഖ്യകളുടെ ഹരണം എല്ലായ്പ്പോഴും സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "If $a \times 1 = a$, this property is related to the role of:",
-                options_en: ["Zero", "One", "Negative numbers", "Fractions"],
-                question_ml: "$a \times 1 = a$ ആണെങ്കിൽ, ഈ ഗുണം എന്തിന്റെ പങ്കുമായി ബന്ധപ്പെട്ടിരിക്കുന്നു?",
-                options_ml: ["പൂജ്യം", "ഒന്ന്", "നെഗറ്റീവ് സംഖ്യകൾ", "ഭിന്നസംഖ്യകൾ"],
-                answer: 1
-            },
-            {
-                question_en: "The sum of a rational number and its additive inverse is always:",
-                options_en: ["1", "-1", "0", "The number itself"],
-                question_ml: "ഒരു ഭിന്നസംഖ്യയുടെയും അതിന്റെ സങ്കലന വിപരീതത്തിന്റെയും തുക എല്ലായ്പ്പോഴും:",
-                options_ml: ["1", "-1", "0", "ആ സംഖ്യ തന്നെ"],
-                answer: 2
             },
             {
                 question_en: "What is the additive inverse of $3/4$?",
@@ -662,67 +363,32 @@
                 answer: 2
             },
             {
-                question_en: "Is $a \times (b + c) = (a \times b) + (a \times c)$ true for rational numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "$a \times (b + c) = (a \times b) + (a \times c)$ എന്നത് ഭിന്നസംഖ്യകൾക്ക് ശരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
-            },
-            {
-                question_en: "The property $a + b = b + a$ is called:",
-                options_en: ["Associativity", "Distributivity", "Commutativity", "Closure"],
-                question_ml: "$a + b = b + a$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
-                options_ml: ["സഹചാരി നിയമം", "വിഭജന നിയമം", "ക്രമവിനിമയ നിയമം", "സംവൃത നിയമം"],
-                answer: 2
-            },
-            {
-                question_en: "The property $(a \times b) \times c = a \times (b \times c)$ is called:",
-                options_en: ["Commutativity", "Distributivity", "Associativity", "Closure"],
-                question_ml: "$(a \times b) \times c = a \times (b \times c)$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
-                options_ml: ["ക്രമവിനിമയ നിയമം", "വിഭജന നിയമം", "സഹചാരി നിയമം", "സംവൃത നിയമം"],
-                answer: 2
-            },
-            {
                 question_en: "Is the set of natural numbers closed under subtraction?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
                 question_en: "Is the set of natural numbers closed under division?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
                 question_en: "Is the multiplication of natural numbers commutative?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗുണനം ക്രമവിനിമയമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
             },
             {
                 question_en: "Is the addition of natural numbers associative?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ സങ്കലനം സഹചാരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
-            },
-            {
-                question_en: "The rational number 0 is the ______ identity for rational numbers.",
-                options_en: ["Multiplicative", "Additive", "Inverse", "Reciprocal"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ______ തന്മകമാണ് പൂജ്യം.",
-                options_ml: ["ഗുണന", "സങ്കലന", "വിപരീത", "റെസിപ്രോക്കൽ"],
-                answer: 1
-            },
-            {
-                question_en: "The rational number 1 is the ______ identity for rational numbers.",
-                options_en: ["Additive", "Multiplicative", "Inverse", "Zero"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ______ തന്മകമാണ് 1.",
-                options_ml: ["സങ്കലന", "ഗുണന", "വിപരീത", "പൂജ്യം"],
-                answer: 1
             },
             {
                 question_en: "Which property allows you to compute $1/3 \times (6/4 \times 3/2)$ as $(1/3 \times 6/4) \times 3/2$?",
@@ -732,45 +398,17 @@
                 answer: 1
             },
             {
-                question_en: "The product of two rational numbers is always a ______ number.",
-                options_en: ["Natural", "Whole", "Integer", "Rational"],
-                question_ml: "രണ്ട് ഭിന്നസംഖ്യകളുടെ ഗുണനഫലം എല്ലായ്പ്പോഴും ഒരു ______ സംഖ്യയാണ്.",
-                options_ml: ["സ്വാഭാവിക", "അഖണ്ഡ", "പൂർണ്ണ", "ഭിന്ന"],
-                answer: 3
-            },
-            {
-                question_en: "Does $a \div (b \div c) = (a \div b) \div c$ hold true for all rational numbers (excluding division by zero)?",
-                options_en: ["Yes", "No"],
-                question_ml: "എല്ലാ ഭിന്നസംഖ്യകൾക്കും (പൂജ്യം കൊണ്ടുള്ള ഹരണം ഒഴികെ) $a \div (b \div c) = (a \div b) \div c$ ശരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1
-            },
-            {
-                question_en: "If $a$ is a rational number, what is $a - 0$?",
+                question_en: "What is the result of $a - 0$ for any rational number $a$?",
                 options_en: ["$0$", "$a$", "$-a$", "Undefined"],
-                question_ml: "$a$ ഒരു ഭിന്നസംഖ്യയാണെങ്കിൽ, $a - 0$ എന്താണ്?",
+                question_ml: "ഏതൊരു ഭിന്നസംഖ്യ $a$ യ്ക്കും $a - 0$ ന്റെ ഫലം എന്താണ്?",
                 options_ml: ["$0$", "$a$", "$-a$", "നിർവചിക്കപ്പെട്ടിട്ടില്ല"],
                 answer: 1
-            },
-            {
-                question_en: "Is the property $a(b+c) = ab+ac$ applicable to rational numbers?",
-                options_en: ["Yes", "No"],
-                question_ml: "$a(b+c) = ab+ac$ എന്ന ഗുണം ഭിന്നസംഖ്യകൾക്ക് ബാധകമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 0
             },
             {
                 question_en: "The sum of $1/2$ and $1/2$ is $1$. This is an example of rational numbers being closed under:",
                 options_en: ["Subtraction", "Multiplication", "Addition", "Division"],
                 question_ml: "$1/2$ ഉം $1/2$ ഉം തമ്മിലുള്ള തുക $1$ ആണ്. ഇത് ഭിന്നസംഖ്യകൾക്ക് കീഴിൽ സംവൃതമായതിന്റെ ഉദാഹരണമാണ്:",
                 options_ml: ["വ്യവകലനം", "ഗുണനം", "സങ്കലനം", "ഹരണം"],
-                answer: 2
-            },
-            {
-                question_en: "If $a \times b = b \times a$ for rational numbers, this is the ______ property.",
-                options_en: ["Associative", "Distributive", "Commutative", "Closure"],
-                question_ml: "ഭിന്നസംഖ്യകൾക്ക് $a \times b = b \times a$ ആണെങ്കിൽ, ഇത് ______ ഗുണമാണ്.",
-                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "സംവൃത"],
                 answer: 2
             },
             {
@@ -782,9 +420,9 @@
             },
             {
                 question_en: "Is $(2/3 - 1/3) - 1/6 = 2/3 - (1/3 - 1/6)$ true for rational numbers?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Always", "Sometimes"],
                 question_ml: "$(2/3 - 1/3) - 1/6 = 2/3 - (1/3 - 1/6)$ എന്നത് ഭിന്നസംഖ്യകൾക്ക് ശരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "എല്ലായ്പ്പോഴും", "ചിലപ്പോൾ"],
                 answer: 1
             },
             {
@@ -802,17 +440,17 @@
                 answer: 1
             },
             {
-                question_en: "Is the set of rational numbers closed under all four basic operations (addition, subtraction, multiplication, division)?",
-                options_en: ["Yes", "No"],
-                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗണം നാല് അടിസ്ഥാന ക്രിയകൾക്കും (സങ്കലനം, വ്യവകലനം, ഗുണനം, ഹരണം) കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
-                answer: 1 // No, because of division by zero.
+                question_en: "Is the set of rational numbers closed under all four basic operations (addition, subtraction, multiplication, division by non-zero numbers)?",
+                options_en: ["Yes", "No", "Sometimes", "Always"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗണം നാല് അടിസ്ഥാന ക്രിയകൾക്കും (സങ്കലനം, വ്യവകലനം, ഗുണനം, പൂജ്യമല്ലാത്ത സംഖ്യകൾ കൊണ്ടുള്ള ഹരണം) കീഴിൽ സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
+                answer: 0
             },
             {
                 question_en: "Does the order of adding three rational numbers affect the sum? Example: $(a+b)+c$ vs $a+(b+c)$.",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "മൂന്ന് ഭിന്നസംഖ്യകൾ കൂട്ടിച്ചേർക്കുന്നതിന്റെ ക്രമം തുകയെ ബാധിക്കുമോ? ഉദാഹരണം: $(a+b)+c$ vs $a+(b+c)$.",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
@@ -824,9 +462,9 @@
             },
             {
                 question_en: "Is $1/2 \times (1/3 - 1/4) = (1/2 \times 1/3) - (1/2 \times 1/4)$ an example of the Distributive property?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "$1/2 \times (1/3 - 1/4) = (1/2 \times 1/3) - (1/2 \times 1/4)$ എന്നത് വിഭജന നിയമത്തിന് ഉദാഹരണമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
             },
             {
@@ -852,9 +490,9 @@
             },
             {
                 question_en: "Is $a - b = b - a$ true for all rational numbers?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "എല്ലാ ഭിന്നസംഖ്യകൾക്കും $a - b = b - a$ ശരിയാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
@@ -873,9 +511,9 @@
             },
             {
                 question_en: "Is the set of integers closed under division?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം ഹരണത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
@@ -894,9 +532,9 @@
             },
             {
                 question_en: "Is multiplication distributive over subtraction for rational numbers?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "ഭിന്നസംഖ്യകൾക്ക് വ്യവകലനത്തിന്മേലുള്ള ഗുണനം വിഭജനമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
             },
             {
@@ -922,9 +560,9 @@
             },
             {
                 question_en: "Is the set of whole numbers closed under subtraction?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "അഖണ്ഡസംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
@@ -936,16 +574,16 @@
             },
             {
                 question_en: "Is the set of integers closed under subtraction?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം വ്യവകലനത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
             },
             {
                 question_en: "Is division of integers commutative?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഹരണം ക്രമവിനിമയമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 1
             },
             {
@@ -957,9 +595,9 @@
             },
             {
                 question_en: "Is the set of natural numbers closed under multiplication?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "സ്വാഭാവിക സംഖ്യകളുടെ ഗണം ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
             },
             {
@@ -978,10 +616,199 @@
             },
             {
                 question_en: "Is the set of integers closed under multiplication?",
-                options_en: ["Yes", "No"],
+                options_en: ["Yes", "No", "Sometimes", "Always"],
                 question_ml: "പൂർണ്ണസംഖ്യകളുടെ ഗണം ഗുണനത്തിന് കീഴിൽ സംവൃതമാണോ?",
-                options_ml: ["അതെ", "അല്ല"],
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
                 answer: 0
+            },
+            {
+                question_en: "Which property is used when you simplify $2 \times (1/2 + 1/4)$ to $(2 \times 1/2) + (2 \times 1/4)$?",
+                options_en: ["Commutative", "Associative", "Distributive", "Closure"],
+                question_ml: "$2 \times (1/2 + 1/4)$ നെ $(2 \times 1/2) + (2 \times 1/4)$ എന്ന് ലളിതമാക്കാൻ ഏത് ഗുണമാണ് ഉപയോഗിക്കുന്നത്?",
+                options_ml: ["ക്രമവിനിമയ", "സഹചാരി", "വിഭജന", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "What is the multiplicative inverse of $-1$?",
+                options_en: ["$1$", "$-1$", "$0$", "Undefined"],
+                question_ml: "$-1$ ന്റെ ഗുണന വിപരീതം എന്താണ്?",
+                options_ml: ["$1$", "$-1$", "$0$", "നിർവചിക്കപ്പെട്ടിട്ടില്ല"],
+                answer: 1
+            },
+            {
+                question_en: "The property $a + (b + c) = (a + b) + c$ is about the grouping of numbers in addition. This is the ______ property.",
+                options_en: ["Commutative", "Distributive", "Associative", "Identity"],
+                question_ml: "$a + (b + c) = (a + b) + c$ എന്ന ഗുണം സങ്കലനത്തിൽ സംഖ്യകളെ ഗ്രൂപ്പുചെയ്യുന്നതുമായി ബന്ധപ്പെട്ടതാണ്. ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["ക്രമവിനിമയ", "വിഭജന", "സഹചാരി", "തന്മക"],
+                answer: 2
+            },
+            {
+                question_en: "Is $1/2 \times 0$ a rational number?",
+                options_en: ["Yes", "No", "Undefined", "Only if $1/2$ is an integer"],
+                question_ml: "$1/2 \times 0$ ഒരു ഭിന്നസംഖ്യയാണോ?",
+                options_ml: ["അതെ", "അല്ല", "നിർവചിക്കപ്പെട്ടിട്ടില്ല", "$1/2$ ഒരു പൂർണ്ണസംഖ്യയാണെങ്കിൽ മാത്രം"],
+                answer: 0
+            },
+            {
+                question_en: "The property that states $a \times b = b \times a$ is called:",
+                options_en: ["Associative", "Distributive", "Commutative", "Closure"],
+                question_ml: "$a \times b = b \times a$ എന്ന് പറയുന്ന ഗുണത്തെ എന്ത് വിളിക്കുന്നു?",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "What is the additive inverse of $-3/4$?",
+                options_en: ["$3/4$", "$-4/3$", "$0$", "$1$"],
+                question_ml: "$-3/4$ ന്റെ സങ്കലന വിപരീതം എന്താണ്?",
+                options_ml: ["$3/4$", "$-4/3$", "$0$", "$1$"],
+                answer: 0
+            },
+            {
+                question_en: "The property $a \times (b - c) = (a \times b) - (a \times c)$ is an example of:",
+                options_en: ["Commutativity", "Associativity", "Distributivity", "Closure"],
+                question_ml: "$a \times (b - c) = (a \times b) - (a \times c)$ എന്നത് ഏതിന് ഉദാഹരണമാണ്?",
+                options_ml: ["ക്രമവിനിമയ നിയമം", "സഹചാരി നിയമം", "വിഭജന നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "Which property is about the result staying within the set after an operation?",
+                options_en: ["Commutative", "Associative", "Distributive", "Closure"],
+                question_ml: "ഒരു ക്രിയയ്ക്ക് ശേഷം ഫലം അതേ ഗണത്തിൽ തന്നെ നിലനിൽക്കുന്നു എന്ന് പറയുന്ന ഗുണം ഏതാണ്?",
+                options_ml: ["ക്രമവിനിമയ", "സഹചാരി", "വിഭജന", "സംവൃത"],
+                answer: 3
+            },
+            {
+                question_en: "What is the multiplicative inverse of $0.5$ (which is $1/2$)?",
+                options_en: ["$-0.5$", "$2$", "$1$", "$0$"],
+                question_ml: "$0.5$ (അതായത് $1/2$) ന്റെ ഗുണന വിപരീതം എന്താണ്?",
+                options_ml: ["$-0.5$", "$2$", "$1$", "$0$"],
+                answer: 1
+            },
+            {
+                question_en: "Is the set of rational numbers closed under division (excluding by zero)?",
+                options_en: ["Yes", "No", "Sometimes", "Always"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗണം ഹരണത്തിന് കീഴിൽ (പൂജ്യം ഒഴികെ) സംവൃതമാണോ?",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
+                answer: 0
+            },
+            {
+                question_en: "The property that states $a + b = b + a$ is about the order of numbers in addition. This is the ______ property.",
+                options_en: ["Associative", "Distributive", "Commutative", "Identity"],
+                question_ml: "$a + b = b + a$ എന്ന് പറയുന്ന ഗുണം സങ്കലനത്തിൽ സംഖ്യകളുടെ ക്രമത്തെക്കുറിച്ചാണ്. ഇത് ______ ഗുണമാണ്.",
+                options_ml: ["സഹചാരി", "വിഭജന", "ക്രമവിനിമയ", "തന്മക"],
+                answer: 2
+            },
+            {
+                question_en: "What is the additive identity?",
+                options_en: ["The number that, when added, changes the number to zero", "The number that, when added, leaves the number unchanged", "The number that, when multiplied, leaves the number unchanged", "The number that, when multiplied, changes the number to zero"],
+                question_ml: "സങ്കലന തന്മകം എന്താണ്?",
+                options_ml: ["കൂട്ടിച്ചേർക്കുമ്പോൾ സംഖ്യയെ പൂജ്യമാക്കുന്ന സംഖ്യ", "കൂട്ടിച്ചേർക്കുമ്പോൾ സംഖ്യയെ മാറ്റമില്ലാതെ നിലനിർത്തുന്ന സംഖ്യ", "ഗുണിക്കുമ്പോൾ സംഖ്യയെ മാറ്റമില്ലാതെ നിലനിർത്തുന്ന സംഖ്യ", "ഗുണിക്കുമ്പോൾ സംഖ്യയെ പൂജ്യമാക്കുന്ന സംഖ്യ"],
+                answer: 1
+            },
+            {
+                question_en: "Is the product of $1/2$ and $1/3$ a rational number?",
+                options_en: ["Yes", "No", "Only if positive", "Only if negative"],
+                question_ml: "$1/2$ ഉം $1/3$ ഉം തമ്മിലുള്ള ഗുണനഫലം ഒരു ഭിന്നസംഖ്യയാണോ?",
+                options_ml: ["അതെ", "അല്ല", "പോസിറ്റീവ് ആണെങ്കിൽ മാത്രം", "നെഗറ്റീവ് ആണെങ്കിൽ മാത്രം"],
+                answer: 0
+            },
+            {
+                question_en: "If $a/b$ and $c/d$ are rational numbers, is $a/b + c/d$ always a rational number?",
+                options_en: ["Yes", "No", "Sometimes", "Only if denominators are same"],
+                question_ml: "$a/b$ ഉം $c/d$ ഉം ഭിന്നസംഖ്യകളാണെങ്കിൽ, $a/b + c/d$ എല്ലായ്പ്പോഴും ഒരു ഭിന്നസംഖ്യയായിരിക്കുമോ?",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "ഛേദങ്ങൾ ഒരുപോലെയാണെങ്കിൽ മാത്രം"],
+                answer: 0
+            },
+            {
+                question_en: "The property that allows you to distribute multiplication over addition or subtraction is called:",
+                options_en: ["Commutative", "Associative", "Distributive", "Closure"],
+                question_ml: "സങ്കലനത്തിലോ വ്യവകലനത്തിലോ ഗുണനത്തെ വിതരണം ചെയ്യാൻ സഹായിക്കുന്ന ഗുണം ഏതാണ്?",
+                options_ml: ["ക്രമവിനിമയ", "സഹചാരി", "വിഭജന", "സംവൃത"],
+                answer: 2
+            },
+            {
+                question_en: "What is the multiplicative identity for rational numbers?",
+                options_en: ["0", "The number itself", "1", "-1"],
+                question_ml: "ഭിന്നസംഖ്യകളുടെ ഗുണന തന്മകം എന്താണ്?",
+                options_ml: ["0", "ആ സംഖ്യ തന്നെ", "1", "-1"],
+                answer: 2
+            },
+            {
+                question_en: "Is $1/2 \div (1/4 + 1/8) = (1/2 \div 1/4) + (1/2 \div 1/8)$ true?",
+                options_en: ["Yes", "No", "Sometimes", "Always"],
+                question_ml: "$1/2 \div (1/4 + 1/8) = (1/2 \div 1/4) + (1/2 \div 1/8)$ ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
+                answer: 1
+            },
+            {
+                question_en: "True or False: The additive inverse of a rational number is always negative.",
+                options_en: ["True", "False"],
+                question_ml: "ശരിയോ തെറ്റോ: ഒരു ഭിന്നസംഖ്യയുടെ സങ്കലന വിപരീതം എല്ലായ്പ്പോഴും നെഗറ്റീവ് ആയിരിക്കും.",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 1
+            },
+            {
+                question_en: "What is the sum of $2/5$ and its additive inverse?",
+                options_en: ["$1$", "$-1$", "$0$", "$2/5$"],
+                question_ml: "$2/5$ ഉം അതിന്റെ സങ്കലന വിപരീതവും തമ്മിലുള്ള തുക എന്താണ്?",
+                options_ml: ["$1$", "$-1$", "$0$", "$2/5$"],
+                answer: 2
+            },
+            {
+                question_en: "Is $a \div (b \div c) = (a \div b) \div c$ true for all rational numbers (excluding division by zero)?",
+                options_en: ["Yes", "No", "Sometimes", "Always"],
+                question_ml: "എല്ലാ ഭിന്നസംഖ്യകൾക്കും (പൂജ്യം കൊണ്ടുള്ള ഹരണം ഒഴികെ) $a \div (b \div c) = (a \div b) \div c$ ശരിയാണോ?",
+                options_ml: ["അതെ", "അല്ല", "ചിലപ്പോൾ", "എല്ലായ്പ്പോഴും"],
+                answer: 1
+            },
+            {
+                question_en: "The product of a rational number and $0$ is always $0$. This is a specific case of which property?",
+                options_en: ["Multiplicative Identity", "Additive Identity", "Zero Property of Multiplication", "Closure"],
+                question_ml: "ഒരു ഭിന്നസംഖ്യയുടെയും $0$ ന്റെയും ഗുണനഫലം എല്ലായ്പ്പോഴും $0$ ആണ്. ഇത് ഏത് ഗുണത്തിന്റെ ഒരു പ്രത്യേക സാഹചര്യമാണ്?",
+                options_ml: ["ഗുണന തന്മകം", "സങ്കലന തന്മകം", "ഗുണനത്തിന്റെ പൂജ്യം നിയമം", "സംവൃത നിയമം"],
+                answer: 2
+            },
+            {
+                question_en: "What is the multiplicative inverse of $-2$?",
+                options_en: ["$2$", "$-1/2$", "$1/2$", "$0$"],
+                question_ml: "$-2$ ന്റെ ഗുണന വിപരീതം എന്താണ്?",
+                options_ml: ["$2$", "$-1/2$", "$1/2$", "$0$"],
+                answer: 1
+            },
+            {
+                question_en: "What is the result of $1/2 + 0$?",
+                options_en: ["$1/2$", "$0$", "$1$", "Undefined"],
+                question_ml: "$1/2 + 0$ ന്റെ ഫലം എന്താണ്?",
+                options_ml: ["$1/2$", "$0$", "$1$", "നിർവചിക്കപ്പെട്ടിട്ടില്ല"],
+                answer: 0
+            },
+            {
+                question_en: "True or False: The multiplicative inverse of $0$ is $0$.",
+                options_en: ["True", "False"],
+                question_ml: "ശരിയോ തെറ്റോ: $0$ ന്റെ ഗുണന വിപരീതം $0$ ആണ്.",
+                options_ml: ["ശരി", "തെറ്റ്"],
+                answer: 1
+            },
+            {
+                question_en: "What is the product of $1/2$ and its multiplicative inverse?",
+                options_en: ["$0$", "$1$", "$-1$", "$1/2$"],
+                question_ml: "$1/2$ ഉം അതിന്റെ ഗുണന വിപരീതവും തമ്മിലുള്ള ഗുണനഫലം എന്താണ്?",
+                options_ml: ["$0$", "$1$", "$-1$", "$1/2$"],
+                answer: 1
+            },
+            {
+                question_en: "What is the additive inverse of $1/2$?",
+                options_en: ["$2$", "$-1/2$", "$0$", "$1$"],
+                question_ml: "$1/2$ ന്റെ സങ്കലന വിപരീതം എന്താണ്?",
+                options_ml: ["$2$", "$-1/2$", "$0$", "$1$"],
+                answer: 1
+            },
+            {
+                question_en: "What is the multiplicative inverse of $1/4$?",
+                options_en: ["$-1/4$", "$4$", "$1$", "$0$"],
+                question_ml: "$1/4$ ന്റെ ഗുണന വിപരീതം എന്താണ്?",
+                options_ml: ["$-1/4$", "$4$", "$1$", "$0$"],
+                answer: 1
             }
         ];
 
@@ -1227,3 +1054,4 @@
     </script>
 </body>
 </html>
+
